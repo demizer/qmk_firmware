@@ -1,53 +1,72 @@
 #include QMK_KEYBOARD_H
 
 enum layer_names {
-    _MAIN,
-    _QWERTY,
-    _RAISE,
-    _VIM,
+    _BASE,
+    _NUML,
+    _SYMB,
+    _FUNL,
+    _NAVL,
 };
 
-/* #define RAISE MO(_RAISE) */
-/* #define LOWER MO(_LOWER) */
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-	[_MAIN] = LAYOUT_5x6(
-        KC_QUES         , KC_EXLM   , KC_AT     , KC_HASH   , OSL(3)  , KC_LBRC   ,                   KC_RBRC   , KC_BSPC   , KC_SLSH   , KC_BSLS   , KC_PGDN   , KC_PGUP   ,
-        KC_TAB          , KC_QUOT   , KC_COMM   , KC_DOT    , KC_P    , KC_Y      ,                   KC_F      , KC_G      , KC_C      , KC_R      , KC_L      , KC_PIPE   ,
-        OSM(MOD_LCTL)   , KC_A      , KC_O      , KC_E      , KC_U    , KC_I      ,                   KC_D      , KC_H      , KC_T      , KC_N      , KC_S      , KC_EQL    , 
-        KC_GESC         , KC_COLN   , KC_Q      , KC_J      , KC_K    , KC_X      ,                   KC_B      , KC_M      , KC_W      , KC_V      , KC_Z      , KC_ASTR   ,
-                                      KC_LCBR   , KC_DLR    ,                                                               OSL(3)    , KC_RCBR   ,
-                                                            MO(2)     , KC_LGUI     ,               KC_SPC      , MO(2)     ,
-                                                            KC_LSPO   , KC_DEL      ,               KC_ENT      , KC_RSPC   ,
-                                                            KC_NO     , LCTL(KC_U)  ,               RCTL(KC_D)  , KC_NO     ),
+	[_BASE] = LAYOUT_5x6(
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+        _______, KC_SLSH    , KC_COMM       , KC_DOT        , KC_P          , KC_Y      ,           KC_F        , KC_G          , KC_C          , KC_R      , KC_L      , _______       ,
+        _______, KC_A       , KC_O          , LALT_T(KC_E)  , LGUI_T(KC_U)  , KC_I      ,           KC_D        , RGUI_T(KC_H)  , RALT_T(KC_T)  , KC_N      , KC_S      , _______       ,
+        _______, KC_COLN    , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , KC_V      , KC_Z      , _______       ,
+                              _______       , _______       ,                                                                     _______       , _______   ,
+                                              TO(_SYMB)     , KC_LCTL       ,                                     MEH_T(KP_SPC) , TO(_NUML)     ,
+                                                _______     , KC_LSFT       ,                                     KC_RSFT       , _______       ,
+                                                _______     , _______       ,                                     _______       , _______       ),
 
-	[_QWERTY] = LAYOUT_5x6(
-        KC_GRV          , KC_1      , KC_2      , KC_3      , KC_4  , KC_5      ,                   KC_6    , KC_7      , KC_8      , KC_9      , KC_0      , DF(0)     ,
-        KC_TRNS         , KC_Q      , KC_W      , KC_E      , KC_R  , KC_T      ,                   KC_Y    , KC_U      , KC_I      , KC_O      , KC_P      , KC_TRNS   ,
-        KC_TRNS         , KC_A      , KC_S      , KC_D      , KC_F  , KC_G      ,                   KC_H    , KC_J      , KC_K      , KC_L      , KC_SCLN   , KC_TRNS   ,
-        KC_TRNS         , KC_Z      , KC_X      , KC_C      , KC_V  , KC_B      ,                   KC_N    , KC_M      , KC_COMM   , KC_DOT    , KC_SLSH   , KC_TRNS   ,
-                                      KC_TRNS   , KC_TRNS   ,                                                             KC_TRNS   , KC_TRNS   ,
-                                                        KC_TRNS     , KC_TRNS   ,               KC_TRNS     , KC_TRNS   ,
-                                                        KC_TRNS     , KC_TRNS   ,               KC_TRNS     , KC_TRNS   ,
-                                                        KC_TRNS     , KC_TRNS   ,               KC_TRNS     , KC_TRNS   ),
+	[_NUML] = LAYOUT_5x6(
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+        _______, KC_ESC     , KC_AMPERSAND  , KC_HASH       , KC_DOLLAR     , KC_UNDS   ,           KC_MINUS    , KC_7          , KC_8          , KC_9      , _______   , _______       ,
+        _______, KC_TAB     , _______       , LALT(KC_TAB)  , OSL(_FUNL)    , KC_PLUS   ,           KC_BACKSPACE, KC_4          , KC_5          , KC_6      , KC_EQUAL  , _______       ,
+        _______, KC_COLON   , _______       , _______       , TO(_NAVL)     , _______   ,           KC_0        , KC_1          , KC_2          , KC_3      , _______   , _______       ,
+                              _______       , _______       ,                                                                     _______       , _______   ,
+                                              TO(_BASE)     , _______       ,                                     _______       , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ),
 
-	[_RAISE] = LAYOUT_5x6(
-        KC_F11          , KC_F1     , KC_F2     , KC_F3     , KC_F4     , KC_F5     ,                   KC_F6       , KC_F7     , KC_F8     , KC_F9     , KC_F10    , KC_F12    ,
-        KC_NO           , KC_NO     , KC_NO     , KC_UP     , KC_PERC   , KC_NO     ,                   KC_AMPR     , KC_7      , KC_8      , KC_9      , KC_CIRC   , KC_NO     ,
-        KC_NO           , KC_NO     , KC_LEFT   , KC_DOWN   , KC_DOWN   , KC_NO     ,                   KC_NO       , KC_4      , KC_5      , KC_6      , KC_MINS   , KC_UNDS   ,
-        DF(1)           , KC_SCLN   , KC_NO     , KC_GRV    , KC_DQUO   , KC_NO     ,                   KC_PLUS     , KC_1      , KC_2      , KC_3      , KC_NO     , KC_NO     ,
-                                      KC_NO     , KC_NO     ,                                                                     KC_NO     , KC_0      ,
-                                                            KC_NO       , KC_TRNS   ,                   KC_TRNS     , KC_NO     ,
-                                                            KC_NO       , KC_NO     ,                   KC_NO       , KC_NO     ,
-                                                            KC_NO       , KC_NO     ,                   KC_NO       , KC_NO     ),
 
-	[_VIM] = LAYOUT_5x6(
-        KC_NO           , KC_NO     , KC_NO     , KC_NO     , KC_NO     , KC_NO     ,                   KC_NO       , KC_NO     , KC_NO     , KC_NO     , KC_NO     , KC_NO     ,
-        KC_NO           , KC_NO     , KC_NO     , KC_NO     , KC_NO     , KC_NO     ,                   KC_NO       , KC_NO     , KC_NO     , KC_NO     , KC_NO     , KC_NO     ,
-        KC_NO           , KC_NO     , KC_NO     , KC_NO     , KC_NO     , KC_NO     ,                   KC_NO       , KC_NO     , KC_NO     , KC_NO     , KC_NO     , KC_NO     ,
-        KC_NO           , KC_NO     , KC_NO     , KC_NO     , KC_NO     , KC_NO     ,                   KC_NO       , KC_NO     , KC_NO     , KC_NO     , KC_NO     , KC_NO     ,
-                                      KC_NO     , KC_TRNS   ,                                                             KC_TRNS   , KC_NO     ,
-                                                        KC_NO       , KC_NO     ,               KC_NO       , KC_NO     ,
-                                                        KC_NO       , KC_NO     ,               KC_NO       , KC_NO     ,
-                                                        KC_NO       , KC_NO     ,               KC_NO       , KC_NO     )
+	[_SYMB] = LAYOUT_5x6(
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+        _______, KC_ESC     , KC_AT         , KC_HASH       , KC_DOLLAR     , KC_PERCENT,           KC_CIRC     , KC_AMPERSAND  , KC_ASTERISK   , KC_SCLN   , _______   , _______       ,
+        _______, KC_TAB     , KC_EQUAL      , _______       , KC_GRAVE      , KC_QUOTE  ,           KC_BSLH     , KC_LCBR       , KC_RCBR       , KC_PIPE   , KC_BSPC   , _______       ,
+        _______, KC_TILDE   , _______       , _______       , _______       , KC_DQUO   ,           KC_LBRC     , KC_LPRN       , KC_RPRN       , KC_RBRC   , _______   , _______       ,
+                              _______       , _______       ,                                                                     _______       , _______   ,
+                                              TO(_BASE)     , _______       ,                                     KC_LABR       , KC_RABR       ,
+                                              _______       , _______       ,                                     _______       , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ),
+
+	[_FUNL] = LAYOUT_5x6(
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , KC_F7         , KC_F8         , KC_F9     , KC_F12    , _______       ,
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , KC_F4         , KC_F5         , KC_F6     , KC_F11    , _______       ,
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , KC_F1         , KC_F2         , KC_F3     , KC_F10    , _______       ,
+                              _______       , _______       ,                                                                     _______       , _______   ,
+                                              TO(_BASE)     , _______       ,                                     _______       , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ),
+
+	[_NAVL] = LAYOUT_5x6(
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , LCTL(KC_R)    , LCTL(KC_P)    , LCTL(KC_C), LCTL(KC_K), LCTL(KC_Z)    ,
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , KC_CAPS       , KC_LEFT       , KC_DOWN   , KC_UP     , KC_RIGHT      ,
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , KC_INSERT     , KC_HOME       , KC_PGUP   , KP_PGDN   , KC_END        ,
+                              _______       , _______       ,                                                                     _______       , _______   ,
+                                              TO(_BASE)     , _______       ,                                     LCTL(KC_LEFT) , LCTL(KC_RIGHT),
+                                              _______       , _______       ,                                     _______       , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ),
+
+	// [LAYER_NAME] = LAYOUT_5x6(
+    //     _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+    //     _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+    //     _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+    //     _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+    //                           _______       , _______       ,                                                                     _______       , _______   ,
+    //                                           _______       , _______       ,                                     _______       , _______       ,
+    //                                           _______       , _______       ,                                     _______       , _______       ,
+    //                                           _______       , _______       ,                                     _______       , _______       ),
 };
