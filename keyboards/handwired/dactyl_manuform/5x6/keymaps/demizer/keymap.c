@@ -40,54 +40,71 @@ typedef struct {
 // Tap dance enums
 enum {
     SUPERG,
+    RMINUS,
+    VUNDER,
+    NMINUS,
+    NUNDER,
     COLONX,
     COMMAQ,
-    DOTXLM
+    DOTXLM,
+    SUPERN,
 };
 
 td_state_t cur_dance(qk_tap_dance_state_t *state);
 
-// For the x tap dance. Put it here so it can be used in any keymap
 void superg_finished(qk_tap_dance_state_t *state, void *user_data);
 void superg_reset(qk_tap_dance_state_t *state, void *user_data);
+
+void rminus_finished(qk_tap_dance_state_t *state, void *user_data);
+void rminus_reset(qk_tap_dance_state_t *state, void *user_data);
+void vunder_finished(qk_tap_dance_state_t *state, void *user_data);
+void vunder_reset(qk_tap_dance_state_t *state, void *user_data);
+
+void nminus_finished(qk_tap_dance_state_t *state, void *user_data);
+void nminus_reset(qk_tap_dance_state_t *state, void *user_data);
+void nunder_finished(qk_tap_dance_state_t *state, void *user_data);
+void nunder_reset(qk_tap_dance_state_t *state, void *user_data);
+
+void supern_finished(qk_tap_dance_state_t *state, void *user_data);
+void supern_reset(qk_tap_dance_state_t *state, void *user_data);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______           , _______   , _______       ,
-        _______, TD(SUPERG) , TD(COMMAQ)    , TD(DOTXLM)    , KC_P          , KC_Y      ,           KC_F        , KC_G          , KC_C          , KC_R              , KC_L      , _______       ,
+        _______, TD(SUPERG) , TD(COMMAQ)    , TD(DOTXLM)    , KC_P          , KC_Y      ,           KC_F        , KC_G          , KC_C          , TD(RMINUS)        , KC_L      , _______       ,
         _______, HOME_A     , HOME_O        , HOME_E        , HOME_U        , KC_I      ,           KC_D        , HOME_H        , HOME_T        , HOME_N            , HOME_S    , _______       ,
-        _______, TD(COLONX) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , KC_V              , KC_Z      , _______       ,
+        _______, TD(COLONX) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , TD(VUNDER)        , KC_Z      , _______       ,
                               _______       , _______       ,                                                                     _______       , _______           ,
-                                              TO(_SYMB)     , LALT(KC_TAB)  ,                                     MEH_T(KC_SPC) , TO(_NUML)     ,
-                                              KC_BACKSPACE  , _______       ,                                     _______       , KC_ENTER      ,
+                                              TD(SUPERN)    , KC_BACKSPACE  ,                                     MEH_T(KC_SPC) , TO(_NUML)     ,
+                                              _______       , LALT(KC_TAB)  ,                                     KC_ENTER      , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
 	[_NUML] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______       , _______       ,
-        _______, KC_ESC     , KC_AT         , KC_HASH       , KC_DOLLAR     , KC_MINUS  ,           KC_UNDS     , KC_7          , KC_8          , KC_9      , RCTL(KC_PLUS) , _______       ,
-        _______, KC_TAB     , _______       , _______       , OSL(_FUNL)    , KC_PLUS   ,           _______     , KC_4          , KC_5          , KC_6      , RCTL(KC_0)    , _______       ,
-        _______, KC_COLON   , _______       , TO(_FUNL)     , TO(_NAVL)     , KC_EQUAL  ,           KC_0        , KC_1          , KC_2          , KC_3      , RCTL(KC_MINS) , _______       ,
+        _______, KC_ESC     , KC_AT         , KC_HASH       , KC_DOLLAR     , KC_PERCENT,           KC_PLUS     , KC_7          , KC_8          , KC_9      , TD(NMINUS)    , _______       ,
+        _______, KC_TAB     , XXXXXXX       , KC_LSFT       , OSL(_FUNL)    , KC_EQUAL  ,           KC_DOT      , KC_4          , KC_5          , KC_6      , RCTL(KC_0)    , _______       ,
+        _______, XXXXXXX    , XXXXXXX       , _______       , TO(_NAVL)     , XXXXXXX   ,           KC_0        , KC_1          , KC_2          , KC_3      , TD(NUNDER)    , _______       ,
                               _______       , _______       ,                                                                     _______       , _______   ,
-                                              TO(_BASE)     , _______       ,                                     _______       , KC_SLASH      ,
-                                              _______       , _______       ,                                     _______       , _______       ,
+                                              TO(_BASE)     , _______       ,                                     _______       , _______       ,
+                                              _______       , KC_DELETE     ,                                     _______       , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
 
 	[_SYMB] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
         _______, KC_ESC     , KC_AT         , KC_HASH       , KC_DOLLAR     , KC_PERCENT,           KC_CIRC     , KC_AMPERSAND  , KC_ASTERISK   , KC_SCLN   , KC_EXLM   , _______       ,
-        _______, KC_TAB     , KC_EQUAL      , _______       , _______       , KC_QUOTE  ,           KC_BACKSLASH, KC_LCBR       , KC_RCBR       , KC_PIPE   , KC_BSPC   , _______       ,
-        _______, KC_TILDE   , _______       , _______       , _______       , KC_DQUO   ,           KC_LBRC     , KC_LPRN       , KC_RPRN       , KC_RBRC   , _______   , _______       ,
+        _______, KC_TAB     , XXXXXXX       , KC_LSFT       , XXXXXXX       , KC_QUOTE  ,           KC_BACKSLASH, KC_LCBR       , KC_RCBR       , KC_PIPE   , KC_BSPC   , _______       ,
+        _______, XXXXXXX    , XXXXXXX       , KC_LT         , KC_GT         , KC_DQUO   ,           KC_LBRC     , KC_LPRN       , KC_RPRN       , KC_RBRC   , XXXXXXX   , _______       ,
                               _______       , _______       ,                                                                     _______       , _______   ,
-                                              TO(_BASE)     , _______       ,                                     KC_LT         , KC_GT         ,
+                                              TO(_BASE)     , _______       ,                                     _______       , KC_SLASH      ,
                                               _______       , _______       ,                                     _______       , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
 	[_FUNL] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
-        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , KC_F7         , KC_F8         , KC_F9     , KC_F12    , _______       ,
-        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , KC_F4         , KC_F5         , KC_F6     , KC_F11    , _______       ,
-        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , KC_F1         , KC_F2         , KC_F3     , KC_F10    , _______       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           XXXXXXX     , KC_F7         , KC_F8         , KC_F9     , KC_F12    , _______       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           XXXXXXX     , KC_F4         , KC_F5         , KC_F6     , KC_F11    , _______       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           XXXXXXX     , KC_F1         , KC_F2         , KC_F3     , KC_F10    , _______       ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               TO(_BASE)     , _______       ,                                     _______       , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ,
@@ -95,9 +112,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[_NAVL] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______       , _______       ,
-        _______, _______    , _______       , _______       , _______       , _______   ,           LCTL(KC_R)  , LCTL(KC_P)    , LCTL(KC_C)    , LCTL(KC_K), LCTL(KC_Z)    , _______       ,
-        _______, _______    , _______       , _______       , _______       , _______   ,           KC_CAPS     , KC_LEFT       , KC_DOWN       , KC_UP     , KC_RIGHT      , _______       ,
-        _______, _______    , _______       , _______       , _______       , _______   ,           KC_INSERT   , KC_HOME       , KC_PGDN       , KC_PGUP   , KC_END        , _______       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           LCTL(KC_R)  , LCTL(KC_P)    , LCTL(KC_C)    , LCTL(KC_K), LCTL(KC_Z)    , _______       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           KC_CAPS     , KC_LEFT       , KC_DOWN       , KC_UP     , KC_RIGHT      , _______       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           KC_INSERT   , KC_HOME       , KC_PGDN       , KC_PGUP   , KC_END        , _______       ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               TO(_BASE)     , _______       ,                                   LCTL(KC_LEFT)   , LCTL(KC_RIGHT),
                                               _______       , _______       ,                                   _______         , _______       ,
@@ -105,9 +122,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	// [LAYER_NAME] = LAYOUT_5x6(
     //     _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
-    //     _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
-    //     _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
-    //     _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+    //     _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           XXXXXXX     , XXXXXXX       , XXXXXXX       , XXXXXXX   , XXXXXXX   , XXXXXXX       ,
+    //     _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           XXXXXXX     , XXXXXXX       , XXXXXXX       , XXXXXXX   , XXXXXXX   , XXXXXXX       ,
+    //     _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           XXXXXXX     , XXXXXXX       , XXXXXXX       , XXXXXXX   , XXXXXXX   , XXXXXXX       ,
     //                           _______       , _______       ,                                                                     _______       , _______   ,
     //                                           _______       , _______       ,                                     _______       , _______       ,
     //                                           _______       , _______       ,                                     _______       , _______       ,
@@ -164,17 +181,16 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
     } else return TD_UNKNOWN;
 }
 
-// Create an instance of 'td_tap_t' for the 'x' tap dance.
-static td_tap_t xtap_state = {
+static td_tap_t superg_state = {
     .is_press_action = true,
     .state = TD_NONE
 };
 
 void superg_finished(qk_tap_dance_state_t *state, void *user_data) {
-    xtap_state.state = cur_dance(state);
-    switch (xtap_state.state) {
+    superg_state.state = cur_dance(state);
+    switch (superg_state.state) {
         case TD_SINGLE_TAP: register_code16(KC_GRAVE); break;
-        case TD_SINGLE_HOLD: register_code16(KC_QUES); break;
+        case TD_SINGLE_HOLD: register_code16(KC_QUOTE); break;
         case TD_DOUBLE_TAP: register_code16(KC_ESC); break;
         case TD_DOUBLE_HOLD: register_code16(KC_ESC); break;
         // Last case is for fast typing. Assuming your key is `f`:
@@ -187,20 +203,192 @@ void superg_finished(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 void superg_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state.state) {
+    switch (superg_state.state) {
         case TD_SINGLE_TAP: unregister_code16(KC_GRAVE); break;
-        case TD_SINGLE_HOLD: unregister_code16(KC_QUES); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_QUOTE); break;
         case TD_DOUBLE_TAP: unregister_code16(KC_ESC); break;
         case TD_DOUBLE_HOLD: unregister_code16(KC_ESC);
         case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_GRAVE);
         default:
             break;
     }
-    xtap_state.state = TD_NONE;
+    superg_state.state = TD_NONE;
+}
+
+static td_tap_t rminus_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void rminus_finished(qk_tap_dance_state_t *state, void *user_data) {
+    rminus_state.state = cur_dance(state);
+    switch (rminus_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_R); break;
+        case TD_SINGLE_HOLD: register_code16(KC_MINUS); break;
+        case TD_DOUBLE_TAP: register_code16(KC_R); break;
+        case TD_DOUBLE_HOLD: register_code16(KC_R); break;
+        // Last case is for fast typing. Assuming your key is `f`:
+        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
+        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
+        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_R); register_code16(KC_R);
+        default:
+            break;
+    }
+}
+
+void rminus_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (rminus_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_R); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_MINUS); break;
+        case TD_DOUBLE_TAP: unregister_code16(KC_R); break;
+        case TD_DOUBLE_HOLD: unregister_code16(KC_R);
+        case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_R);
+        default:
+            break;
+    }
+    rminus_state.state = TD_NONE;
+}
+
+static td_tap_t vunder_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void vunder_finished(qk_tap_dance_state_t *state, void *user_data) {
+    vunder_state.state = cur_dance(state);
+    switch (vunder_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_V); break;
+        case TD_SINGLE_HOLD: register_code16(KC_UNDS); break;
+        case TD_DOUBLE_TAP: register_code16(KC_V); break;
+        case TD_DOUBLE_HOLD: register_code16(KC_V); break;
+        // Last case is for fast typing. Assuming your key is `f`:
+        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
+        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
+        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_V); register_code16(KC_V);
+        default:
+            break;
+    }
+}
+
+void vunder_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (vunder_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_V); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_UNDS); break;
+        case TD_DOUBLE_TAP: unregister_code16(KC_V); break;
+        case TD_DOUBLE_HOLD: unregister_code16(KC_V);
+        case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_V);
+        default:
+            break;
+    }
+    vunder_state.state = TD_NONE;
+}
+
+static td_tap_t nminus_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void nminus_finished(qk_tap_dance_state_t *state, void *user_data) {
+    nminus_state.state = cur_dance(state);
+    switch (nminus_state.state) {
+        case TD_SINGLE_TAP: register_code16(RCTL(KC_PLUS)); break;
+        case TD_SINGLE_HOLD: register_code16(KC_MINUS); break;
+        case TD_DOUBLE_TAP: register_code16(RCTL(KC_PLUS)); break;
+        case TD_DOUBLE_HOLD: register_code16(RCTL(KC_PLUS)); break;
+        // Last case is for fast typing. Assuming your key is `f`:
+        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
+        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
+        case TD_DOUBLE_SINGLE_TAP: tap_code16(RCTL(KC_PLUS)); register_code16(RCTL(KC_PLUS));
+        default:
+            break;
+    }
+}
+
+void nminus_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (nminus_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(RCTL(KC_PLUS)); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_MINUS); break;
+        case TD_DOUBLE_TAP: unregister_code16(RCTL(KC_PLUS)); break;
+        case TD_DOUBLE_HOLD: unregister_code16(RCTL(KC_PLUS));
+        case TD_DOUBLE_SINGLE_TAP: unregister_code16(RCTL(KC_PLUS));
+        default:
+            break;
+    }
+    nminus_state.state = TD_NONE;
+}
+
+static td_tap_t nunder_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void nunder_finished(qk_tap_dance_state_t *state, void *user_data) {
+    nunder_state.state = cur_dance(state);
+    switch (nunder_state.state) {
+        case TD_SINGLE_TAP: register_code16(RCTL(KC_MINS)); break;
+        case TD_SINGLE_HOLD: register_code16(KC_UNDS); break;
+        case TD_DOUBLE_TAP: register_code16(RCTL(KC_MINS)); break;
+        case TD_DOUBLE_HOLD: register_code16(RCTL(KC_MINS)); break;
+        // Last case is for fast typing. Assuming your key is `f`:
+        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
+        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
+        case TD_DOUBLE_SINGLE_TAP: tap_code16(RCTL(KC_MINS)); register_code16(RCTL(KC_MINS));
+        default:
+            break;
+    }
+}
+
+void nunder_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (nunder_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(RCTL(KC_MINS)); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_UNDS); break;
+        case TD_DOUBLE_TAP: unregister_code16(RCTL(KC_MINS)); break;
+        case TD_DOUBLE_HOLD: unregister_code16(RCTL(KC_MINS));
+        case TD_DOUBLE_SINGLE_TAP: unregister_code16(RCTL(KC_MINS));
+        default:
+            break;
+    }
+    nunder_state.state = TD_NONE;
+}
+
+static td_tap_t supern_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void supern_finished(qk_tap_dance_state_t *state, void *user_data) {
+    supern_state.state = cur_dance(state);
+    switch (supern_state.state) {
+        case TD_SINGLE_TAP: layer_on(_SYMB); break;
+        case TD_SINGLE_HOLD: layer_on(_NAVL); break;
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: break;
+        default:
+            break;
+    }
+}
+
+void supern_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (supern_state.state) {
+        case TD_SINGLE_TAP: break;
+        case TD_SINGLE_HOLD: layer_off(_NAVL); break;
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: break;
+        default:
+            break;
+    }
+    supern_state.state = TD_NONE;
 }
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [SUPERG] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superg_finished, superg_reset)
+    [SUPERG] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superg_finished, superg_reset),
+    [RMINUS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rminus_finished, rminus_reset),
+    [VUNDER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, vunder_finished, vunder_reset),
+    [NMINUS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, nminus_finished, nminus_reset),
+    [NUNDER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, nunder_finished, nunder_reset),
+    [SUPERN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, supern_finished, supern_reset),
     [COLONX] = ACTION_TAP_DANCE_DOUBLE(KC_COLN, KC_SCLN),
     [COMMAQ] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_QUES),
     [DOTXLM] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_EXLM),
