@@ -39,7 +39,7 @@ typedef struct {
 
 // Tap dance enums
 enum {
-    SUPERG,
+    SUPERE,
     RMINUS,
     VUNDER,
     NMINUS,
@@ -48,12 +48,15 @@ enum {
     COMMAQ,
     DOTXLM,
     SUPERN,
+    NUMOSL,
+    SUPERC,
+    SUPERG,
 };
 
 td_state_t cur_dance(qk_tap_dance_state_t *state);
 
-void superg_finished(qk_tap_dance_state_t *state, void *user_data);
-void superg_reset(qk_tap_dance_state_t *state, void *user_data);
+void supere_finished(qk_tap_dance_state_t *state, void *user_data);
+void supere_reset(qk_tap_dance_state_t *state, void *user_data);
 
 void rminus_finished(qk_tap_dance_state_t *state, void *user_data);
 void rminus_reset(qk_tap_dance_state_t *state, void *user_data);
@@ -68,14 +71,23 @@ void nunder_reset(qk_tap_dance_state_t *state, void *user_data);
 void supern_finished(qk_tap_dance_state_t *state, void *user_data);
 void supern_reset(qk_tap_dance_state_t *state, void *user_data);
 
+void numosl_finished(qk_tap_dance_state_t *state, void *user_data);
+void numosl_reset(qk_tap_dance_state_t *state, void *user_data);
+
+void superc_finished(qk_tap_dance_state_t *state, void *user_data);
+void superc_reset(qk_tap_dance_state_t *state, void *user_data);
+
+void superg_finished(qk_tap_dance_state_t *state, void *user_data);
+void superg_reset(qk_tap_dance_state_t *state, void *user_data);
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______           , _______   , _______       ,
-        _______, TD(SUPERG) , TD(COMMAQ)    , TD(DOTXLM)    , KC_P          , KC_Y      ,           KC_F        , KC_G          , KC_C          , TD(RMINUS)        , KC_L      , _______       ,
+        _______, TD(SUPERE) , TD(COMMAQ)    , TD(DOTXLM)    , KC_P          , KC_Y      ,           KC_F        , TD(SUPERG)    , TD(SUPERC)    , TD(RMINUS)        , KC_L      , _______       ,
         _______, HOME_A     , HOME_O        , HOME_E        , HOME_U        , KC_I      ,           KC_D        , HOME_H        , HOME_T        , HOME_N            , HOME_S    , _______       ,
         _______, TD(COLONX) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , TD(VUNDER)        , KC_Z      , _______       ,
                               _______       , _______       ,                                                                     _______       , _______           ,
-                                              TD(SUPERN)    , KC_BACKSPACE  ,                                     MEH_T(KC_SPC) , TO(_NUML)     ,
+                                              TD(SUPERN)    , KC_BACKSPACE  ,                                     MEH_T(KC_SPC) , TD(NUMOSL)    ,
                                               _______       , LALT(KC_TAB)  ,                                     KC_ENTER      , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
@@ -181,29 +193,26 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
     } else return TD_UNKNOWN;
 }
 
-static td_tap_t superg_state = {
+static td_tap_t supere_state = {
     .is_press_action = true,
     .state = TD_NONE
 };
 
-void superg_finished(qk_tap_dance_state_t *state, void *user_data) {
-    superg_state.state = cur_dance(state);
-    switch (superg_state.state) {
+void supere_finished(qk_tap_dance_state_t *state, void *user_data) {
+    supere_state.state = cur_dance(state);
+    switch (supere_state.state) {
         case TD_SINGLE_TAP: register_code16(KC_GRAVE); break;
         case TD_SINGLE_HOLD: register_code16(KC_QUOTE); break;
         case TD_DOUBLE_TAP: register_code16(KC_ESC); break;
         case TD_DOUBLE_HOLD: register_code16(KC_ESC); break;
-        // Last case is for fast typing. Assuming your key is `f`:
-        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
         case TD_DOUBLE_SINGLE_TAP: tap_code(KC_GRAVE); register_code16(KC_GRAVE);
         default:
             break;
     }
 }
 
-void superg_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (superg_state.state) {
+void supere_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (supere_state.state) {
         case TD_SINGLE_TAP: unregister_code16(KC_GRAVE); break;
         case TD_SINGLE_HOLD: unregister_code16(KC_QUOTE); break;
         case TD_DOUBLE_TAP: unregister_code16(KC_ESC); break;
@@ -212,7 +221,7 @@ void superg_reset(qk_tap_dance_state_t *state, void *user_data) {
         default:
             break;
     }
-    superg_state.state = TD_NONE;
+    supere_state.state = TD_NONE;
 }
 
 static td_tap_t rminus_state = {
@@ -382,13 +391,109 @@ void supern_reset(qk_tap_dance_state_t *state, void *user_data) {
     supern_state.state = TD_NONE;
 }
 
+static td_tap_t numosl_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void numosl_finished(qk_tap_dance_state_t *state, void *user_data) {
+    numosl_state.state = cur_dance(state);
+    switch (numosl_state.state) {
+        case TD_SINGLE_TAP: layer_on(_NUML); break;
+        case TD_SINGLE_HOLD: layer_on(_NUML); break;
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: break;
+        default:
+            break;
+    }
+}
+
+void numosl_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (numosl_state.state) {
+        case TD_SINGLE_TAP: break;
+        case TD_SINGLE_HOLD: layer_off(_NUML); break;
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: break;
+        default:
+            break;
+    }
+    numosl_state.state = TD_NONE;
+}
+
+static td_tap_t superc_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void superc_finished(qk_tap_dance_state_t *state, void *user_data) {
+    superc_state.state = cur_dance(state);
+    switch (superc_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_C); break;
+        case TD_SINGLE_HOLD: register_code16(KC_SLASH); break;
+        case TD_DOUBLE_TAP: register_code16(KC_C); break;
+        case TD_DOUBLE_HOLD: register_code16(KC_C); break;
+        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_C); register_code16(KC_C);
+        default:
+            break;
+    }
+}
+
+void superc_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (superc_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_C); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_SLASH); break;
+        case TD_DOUBLE_TAP: unregister_code16(KC_C); break;
+        case TD_DOUBLE_HOLD: unregister_code16(KC_C);
+        case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_C);
+        default:
+            break;
+    }
+    superc_state.state = TD_NONE;
+}
+
+static td_tap_t superg_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void superg_finished(qk_tap_dance_state_t *state, void *user_data) {
+    superg_state.state = cur_dance(state);
+    switch (superg_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_G); break;
+        case TD_SINGLE_HOLD: register_code16(KC_EQUAL); break;
+        case TD_DOUBLE_TAP: register_code16(KC_G); break;
+        case TD_DOUBLE_HOLD: register_code16(KC_G); break;
+        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_G); register_code16(KC_G);
+        default:
+            break;
+    }
+}
+
+void superg_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (superg_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_G); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_EQUAL); break;
+        case TD_DOUBLE_TAP: unregister_code16(KC_G); break;
+        case TD_DOUBLE_HOLD: unregister_code16(KC_G);
+        case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_G);
+        default:
+            break;
+    }
+    superg_state.state = TD_NONE;
+}
+
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [SUPERG] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superg_finished, superg_reset),
+    [SUPERE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, supere_finished, supere_reset),
     [RMINUS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rminus_finished, rminus_reset),
     [VUNDER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, vunder_finished, vunder_reset),
     [NMINUS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, nminus_finished, nminus_reset),
     [NUNDER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, nunder_finished, nunder_reset),
     [SUPERN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, supern_finished, supern_reset),
+    [NUMOSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, numosl_finished, numosl_reset),
+    [SUPERC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superc_finished, superc_reset),
+    [SUPERG] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superg_finished, superg_reset),
     [COLONX] = ACTION_TAP_DANCE_DOUBLE(KC_COLN, KC_SCLN),
     [COMMAQ] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_QUES),
     [DOTXLM] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_EXLM),
