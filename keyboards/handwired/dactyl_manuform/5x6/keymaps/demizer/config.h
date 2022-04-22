@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define SPLIT_USB_DETECT
 #define SPLIT_USB_TIMEOUT 2000
-#define TAPPING_TERM 250
+#define TAPPING_TERM 180
 #define IGNORE_MOD_TAP_INTERRUPT
 
 #define MASTER_LEFT

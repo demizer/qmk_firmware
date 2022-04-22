@@ -44,13 +44,15 @@ enum {
     VUNDER,
     NMINUS,
     NUNDER,
-    COLONX,
+    CMDTIL,
     COMMAQ,
     DOTXLM,
     SUPERN,
     NUMOSL,
     SUPERC,
     SUPERG,
+    NMINS9,
+    NUNDR3,
 };
 
 td_state_t cur_dance(qk_tap_dance_state_t *state);
@@ -80,12 +82,17 @@ void superc_reset(qk_tap_dance_state_t *state, void *user_data);
 void superg_finished(qk_tap_dance_state_t *state, void *user_data);
 void superg_reset(qk_tap_dance_state_t *state, void *user_data);
 
+void nminus_finished(qk_tap_dance_state_t *state, void *user_data);
+void nminus_reset(qk_tap_dance_state_t *state, void *user_data);
+void nunder_finished(qk_tap_dance_state_t *state, void *user_data);
+void nunder_reset(qk_tap_dance_state_t *state, void *user_data);
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______           , _______   , _______       ,
         _______, TD(SUPERE) , TD(COMMAQ)    , TD(DOTXLM)    , KC_P          , KC_Y      ,           KC_F        , TD(SUPERG)    , TD(SUPERC)    , TD(RMINUS)        , KC_L      , _______       ,
         _______, HOME_A     , HOME_O        , HOME_E        , HOME_U        , KC_I      ,           KC_D        , HOME_H        , HOME_T        , HOME_N            , HOME_S    , _______       ,
-        _______, TD(COLONX) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , TD(VUNDER)        , KC_Z      , _______       ,
+        _______, TD(CMDTIL) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , TD(VUNDER)        , KC_Z      , _______       ,
                               _______       , _______       ,                                                                     _______       , _______           ,
                                               TD(SUPERN)    , KC_BACKSPACE  ,                                     MEH_T(KC_SPC) , TD(NUMOSL)    ,
                                               _______       , LALT(KC_TAB)  ,                                     KC_ENTER      , _______       ,
@@ -93,9 +100,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[_NUML] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______       , _______       ,
-        _______, KC_ESC     , KC_AT         , KC_HASH       , KC_DOLLAR     , KC_PERCENT,           KC_PLUS     , KC_7          , KC_8          , KC_9      , TD(NMINUS)    , _______       ,
+        _______, KC_ESC     , KC_AT         , KC_HASH       , KC_DOLLAR     , KC_PERCENT,           KC_PLUS     , KC_7          , KC_8          , TD(NMINS9), TD(NMINUS)    , _______       ,
         _______, KC_TAB     , XXXXXXX       , KC_LSFT       , OSL(_FUNL)    , KC_EQUAL  ,           KC_DOT      , KC_4          , KC_5          , KC_6      , RCTL(KC_0)    , _______       ,
-        _______, XXXXXXX    , XXXXXXX       , _______       , TO(_NAVL)     , XXXXXXX   ,           KC_0        , KC_1          , KC_2          , KC_3      , TD(NUNDER)    , _______       ,
+        _______, XXXXXXX    , XXXXXXX       , _______       , TO(_NAVL)     , XXXXXXX   ,           KC_0        , KC_1          , KC_2          , TD(NUNDR3), TD(NUNDER)    , _______       ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               TO(_BASE)     , _______       ,                                     _______       , _______       ,
                                               _______       , KC_DELETE     ,                                     _______       , _______       ,
@@ -201,11 +208,11 @@ static td_tap_t supere_state = {
 void supere_finished(qk_tap_dance_state_t *state, void *user_data) {
     supere_state.state = cur_dance(state);
     switch (supere_state.state) {
-        case TD_SINGLE_TAP: register_code16(KC_GRAVE); break;
+        case TD_SINGLE_TAP: register_code16(KC_QUOTE); break;
         case TD_SINGLE_HOLD: register_code16(KC_QUOTE); break;
         case TD_DOUBLE_TAP: register_code16(KC_ESC); break;
         case TD_DOUBLE_HOLD: register_code16(KC_ESC); break;
-        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_GRAVE); register_code16(KC_GRAVE);
+        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_QUOTE); register_code16(KC_QUOTE);
         default:
             break;
     }
@@ -213,11 +220,11 @@ void supere_finished(qk_tap_dance_state_t *state, void *user_data) {
 
 void supere_reset(qk_tap_dance_state_t *state, void *user_data) {
     switch (supere_state.state) {
-        case TD_SINGLE_TAP: unregister_code16(KC_GRAVE); break;
+        case TD_SINGLE_TAP: unregister_code16(KC_QUOTE); break;
         case TD_SINGLE_HOLD: unregister_code16(KC_QUOTE); break;
         case TD_DOUBLE_TAP: unregister_code16(KC_ESC); break;
         case TD_DOUBLE_HOLD: unregister_code16(KC_ESC);
-        case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_GRAVE);
+        case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_QUOTE);
         default:
             break;
     }
@@ -234,11 +241,8 @@ void rminus_finished(qk_tap_dance_state_t *state, void *user_data) {
     switch (rminus_state.state) {
         case TD_SINGLE_TAP: register_code16(KC_R); break;
         case TD_SINGLE_HOLD: register_code16(KC_MINUS); break;
-        case TD_DOUBLE_TAP: register_code16(KC_R); break;
-        case TD_DOUBLE_HOLD: register_code16(KC_R); break;
-        // Last case is for fast typing. Assuming your key is `f`:
-        // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-        // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
         case TD_DOUBLE_SINGLE_TAP: tap_code(KC_R); register_code16(KC_R);
         default:
             break;
@@ -249,8 +253,8 @@ void rminus_reset(qk_tap_dance_state_t *state, void *user_data) {
     switch (rminus_state.state) {
         case TD_SINGLE_TAP: unregister_code16(KC_R); break;
         case TD_SINGLE_HOLD: unregister_code16(KC_MINUS); break;
-        case TD_DOUBLE_TAP: unregister_code16(KC_R); break;
-        case TD_DOUBLE_HOLD: unregister_code16(KC_R);
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
         case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_R);
         default:
             break;
@@ -484,6 +488,99 @@ void superg_reset(qk_tap_dance_state_t *state, void *user_data) {
     superg_state.state = TD_NONE;
 }
 
+static td_tap_t cmdtil_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void cmdtil_finished(qk_tap_dance_state_t *state, void *user_data) {
+    cmdtil_state.state = cur_dance(state);
+    switch (cmdtil_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_SCLN); break;
+        case TD_SINGLE_HOLD: register_code16(KC_TILD); break;
+        case TD_DOUBLE_TAP: register_code16(KC_GRAVE); break;
+        case TD_DOUBLE_HOLD: register_code16(KC_GRAVE); break;
+        case TD_DOUBLE_SINGLE_TAP: tap_code(KC_SCLN); register_code16(KC_SCLN);
+        default:
+            break;
+    }
+}
+
+void cmdtil_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (cmdtil_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_SCLN); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_TILD); break;
+        case TD_DOUBLE_TAP: unregister_code16(KC_GRAVE); break;
+        case TD_DOUBLE_HOLD: unregister_code16(KC_GRAVE);
+        case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_SCLN);
+        default:
+            break;
+    }
+    cmdtil_state.state = TD_NONE;
+}
+
+static td_tap_t nmins9_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void nmins9_finished(qk_tap_dance_state_t *state, void *user_data) {
+    nmins9_state.state = cur_dance(state);
+    switch (nmins9_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_9); break;
+        case TD_SINGLE_HOLD: register_code16(KC_MINUS); break;
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: tap_code16(KC_9); register_code16(KC_9);
+        default:
+            break;
+    }
+}
+
+void nmins9_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (nmins9_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_9); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_MINUS); break;
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_9);
+        default:
+            break;
+    }
+    nmins9_state.state = TD_NONE;
+}
+
+static td_tap_t nundr3_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void nundr3_finished(qk_tap_dance_state_t *state, void *user_data) {
+    nundr3_state.state = cur_dance(state);
+    switch (nundr3_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_3); break;
+        case TD_SINGLE_HOLD: register_code16(KC_UNDS); break;
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: tap_code16(KC_3); register_code16(KC_3);
+        default:
+            break;
+    }
+}
+
+void nundr3_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (nundr3_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_3); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_UNDS); break;
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_3);
+        default:
+            break;
+    }
+    nundr3_state.state = TD_NONE;
+}
+
 qk_tap_dance_action_t tap_dance_actions[] = {
     [SUPERE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, supere_finished, supere_reset),
     [RMINUS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rminus_finished, rminus_reset),
@@ -494,7 +591,9 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [NUMOSL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, numosl_finished, numosl_reset),
     [SUPERC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superc_finished, superc_reset),
     [SUPERG] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superg_finished, superg_reset),
-    [COLONX] = ACTION_TAP_DANCE_DOUBLE(KC_COLN, KC_SCLN),
+    [CMDTIL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, cmdtil_finished, cmdtil_reset),
+    [NMINS9] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, nmins9_finished, nmins9_reset),
+    [NUNDR3] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, nundr3_finished, nundr3_reset),
     [COMMAQ] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_QUES),
     [DOTXLM] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_EXLM),
 };
