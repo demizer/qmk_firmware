@@ -80,9 +80,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[_SYMB] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
-        _______, KC_ESC     , KC_LBRC       , KC_LCBR       , KC_LPRN       , KC_LT     ,           KC_GT       , KC_RPRN       , KC_RCBR       , KC_RBRC   , KC_EQUAL  , _______   ,
-        _______, KC_TAB     , KC_PLUS       , KC_AT         , KC_HASH       , XXXXXXX   ,           KC_ENTER    , OS_CTRL       , OS_SHFT       , OS_ALT    , OS_GUI    , _______   ,
-        _______, XXXXXXX    , XXXXXXX       , KC_ASTERISK   , KC_CIRC       , KC_PERC   ,           KC_AMPERSAND, KC_DOLLAR     , KC_BACKSLASH  , KC_SLASH  , KC_PIPE   , _______   ,
+        _______, KC_ESC     , KC_LBRC       , KC_LCBR       , KC_LPRN       , KC_LT     ,           KC_GT       , KC_RPRN       , KC_RCBR       , KC_RBRC   , XXXXXXX   , _______   ,
+        _______, KC_TAB     , KC_PLUS       , KC_AT         , KC_HASH       , XXXXXXX   ,           KC_SLASH    , OS_CTRL       , OS_SHFT       , OS_ALT    , OS_GUI    , _______   ,
+        _______, XXXXXXX    , XXXXXXX       , KC_ASTERISK   , KC_CIRC       , KC_PERC   ,           KC_AMPERSAND, KC_DOLLAR     , KC_EQUAL      , KC_BSLS   , KC_PIPE   , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               _______       , KC_MINS       ,                                     _______       , _______       ,
                                               _______       , KC_UNDS       ,                                     _______       , _______       ,
