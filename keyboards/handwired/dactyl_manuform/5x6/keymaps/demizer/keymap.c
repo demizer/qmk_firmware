@@ -14,8 +14,8 @@ enum layer_names {
 #define ZOOMOUT LCTL(KC_MINUS)
 #define ZOOMIN LCTL(KC_PLUS)
 #define ZOOMRES LCTL(KC_0)
-#define LA_SYM MO(SYM)
-#define LA_NAV MO(NAV)
+#define LA_SYM MO(_SYMB)
+#define LA_NAV MO(_NAVL)
 
 typedef enum {
     TD_NONE,
@@ -39,7 +39,7 @@ enum keycodes {
     OS_SHFT = SAFE_RANGE,
     OS_CTRL,
     OS_ALT,
-    OS_CMD,
+    OS_GUI,
 };
 
 // Tap dance enums
@@ -84,23 +84,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, TD(CMDTIL) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , TD(VUNDER), KC_Z      , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               LA_NAV        , KC_BACKSPACE  ,                                     MEH_T(KC_SPC) , LA_SYM        ,
-                                              _______       , KC_SHIFT      ,                                     KC_ENTER      , _______       ,
+                                              _______       , KC_LSHIFT     ,                                     KC_ENTER      , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
 	[_NAVL] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
         _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , VOLUP     ,           LCTL(KC_R)  , KC_HOME       , KC_UP         , KC_END    , ZOOMOUT   , _______   ,
-        _______, OS_GUI     , OS_ALT        , OS_SHIFT      , OS_CTRL       , VOLDN     ,           LCTL(KC_Z)  , KC_LEFT       , KC_DOWN       , KC_RIGHT  , ZOOMRES   , _______   ,
+        _______, OS_GUI     , OS_ALT        , OS_SHFT       , OS_CTRL       , VOLDN     ,           LCTL(KC_Z)  , KC_LEFT       , KC_DOWN       , KC_RIGHT  , ZOOMRES   , _______   ,
         _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           KC_DEL      , KC_PGDN       , KC_PGUP       , KC_CAPS   , ZOOMIN    , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
-                                              _______       , _______       ,                                   LCTL(KC_P)      , LCTL(KC_C)    ,
-                                              _______       , _______       ,                                   LCTL(KC_X)      , _______       ,
-                                              _______       , _______       ,                                   _______         , _______       ),
+                                              _______       , _______       ,                                     LCTL(KC_P)    , LCTL(KC_C)    ,
+                                              _______       , _______       ,                                     LCTL(KC_X)    , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ),
 
 	[_SYMB] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
         _______, KC_ESC     , KC_LBRC       , KC_LCBR       , KC_LPRN       , KC_LT     ,           KC_GT       , KC_RPRN       , KC_RCBR       , KC_RBRC   , XXXXXXX   , _______   ,
-        _______, KC_TAB     , XXXXXXX       , KC_AT         , KC_HASH       , XXXXXXX   ,           XXXXXXX     , OS_CTRL       , OS_SHIFT      , OS_ALT    , OS_GUI    , _______   ,
+        _______, KC_TAB     , XXXXXXX       , KC_AT         , KC_HASH       , XXXXXXX   ,           KC_ENTER    , OS_CTRL       , OS_SHFT       , OS_ALT    , OS_GUI    , _______   ,
         _______, XXXXXXX    , XXXXXXX       , KC_ASTERISK   , KC_CIRC       , KC_PERC   ,           KC_AMPERSAND, KC_DOLLAR     , KC_BACKSLASH  , KC_PIPE   , XXXXXXX   , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               _______       , _______       ,                                     _______       , _______       ,
@@ -145,7 +145,7 @@ bool is_oneshot_ignored_key(uint16_t keycode) {
     case OS_SHFT:
     case OS_CTRL:
     case OS_ALT:
-    case OS_CMD:
+    case OS_GUI:
         return true;
     default:
         return false;
@@ -171,7 +171,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         keycode, record
     );
     update_oneshot(
-        &os_cmd_state, KC_LCMD, OS_CMD,
+        &os_cmd_state, KC_LCMD, OS_GUI,
         keycode, record
     );
 
@@ -179,7 +179,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, _SYM, _NAVL, _NUML);
+    return update_tri_layer_state(state, _SYMB, _NAVL, _NUML);
 }
 
 td_state_t cur_dance(qk_tap_dance_state_t *state) {
