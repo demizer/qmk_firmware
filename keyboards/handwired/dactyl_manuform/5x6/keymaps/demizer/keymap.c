@@ -85,7 +85,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, KC_A       , KC_O          , KC_E          , KC_U          , KC_I      ,           KC_D        , KC_H          , KC_T          , KC_N      , KC_S      , _______   ,
         _______, TD(CMDTIL) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , TD(SUPERW)    , KC_V      , KC_Z      , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
-                                              LA_NAV        , KC_BACKSPACE  ,                                     MEH_T(KC_SPC) , LA_SYM        ,
+                                              LA_NAV        , KC_BACKSPACE  ,                                     KC_SPC        , LA_SYM        ,
                                               _______       , ALTTAB        ,                                     KC_ENTER      , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
@@ -102,8 +102,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_SYMB] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
         _______, KC_ESC     , KC_LBRC       , KC_LCBR       , KC_LPRN       , KC_LT     ,           KC_GT       , KC_RPRN       , KC_RCBR       , KC_RBRC   , XXXXXXX   , _______   ,
-        _______, KC_TAB     , XXXXXXX       , KC_AT         , KC_HASH       , XXXXXXX   ,           KC_ENTER    , OS_CTRL       , OS_SHFT       , OS_ALT    , OS_GUI    , _______   ,
-        _______, XXXXXXX    , XXXXXXX       , KC_ASTERISK   , KC_CIRC       , KC_PERC   ,           KC_AMPERSAND, KC_DOLLAR     , KC_BACKSLASH  , KC_PIPE   , XXXXXXX   , _______   ,
+        _______, KC_TAB     , KC_PLUS       , KC_AT         , KC_HASH       , XXXXXXX   ,           KC_ENTER    , OS_CTRL       , OS_SHFT       , OS_ALT    , OS_GUI    , _______   ,
+        _______, XXXXXXX    , KC_MINUS      , KC_ASTERISK   , KC_CIRC       , KC_PERC   ,           KC_AMPERSAND, KC_DOLLAR     , KC_BACKSLASH  , KC_PIPE   , XXXXXXX   , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               _______       , _______       ,                                     _______       , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ,
@@ -216,7 +216,7 @@ void supere_finished(qk_tap_dance_state_t *state, void *user_data) {
     supere_state.state = cur_dance(state);
     switch (supere_state.state) {
         case TD_SINGLE_TAP: register_code16(KC_QUOTE); break;
-        case TD_SINGLE_HOLD: register_code16(KC_QUOTE); break;
+        case TD_SINGLE_HOLD: register_code16(KC_GRAVE); break;
         case TD_DOUBLE_TAP: register_code16(KC_ESC); break;
         case TD_DOUBLE_HOLD: register_code16(KC_ESC); break;
         case TD_DOUBLE_SINGLE_TAP: tap_code(KC_QUOTE); register_code16(KC_QUOTE);
@@ -228,7 +228,7 @@ void supere_finished(qk_tap_dance_state_t *state, void *user_data) {
 void supere_reset(qk_tap_dance_state_t *state, void *user_data) {
     switch (supere_state.state) {
         case TD_SINGLE_TAP: unregister_code16(KC_QUOTE); break;
-        case TD_SINGLE_HOLD: unregister_code16(KC_QUOTE); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_GRAVE); break;
         case TD_DOUBLE_TAP: unregister_code16(KC_ESC); break;
         case TD_DOUBLE_HOLD: unregister_code16(KC_ESC);
         case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_QUOTE);
