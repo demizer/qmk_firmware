@@ -11,11 +11,13 @@ enum layer_names {
 
 #define VOLUP KC_KB_VOLUME_UP
 #define VOLDN KC_KB_VOLUME_DOWN
+#define VOLMUTE KC_AUDIO_MUTE
 #define ZOOMOUT LCTL(KC_MINUS)
 #define ZOOMIN LCTL(KC_PLUS)
 #define ZOOMRES LCTL(KC_0)
 #define LA_SYM MO(_SYMB)
 #define LA_NAV MO(_NAVL)
+#define ALTTAB LALT(KC_TAB)
 
 typedef enum {
     TD_NONE,
@@ -84,17 +86,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, TD(CMDTIL) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , TD(VUNDER), KC_Z      , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               LA_NAV        , KC_BACKSPACE  ,                                     MEH_T(KC_SPC) , LA_SYM        ,
-                                              _______       , KC_LSHIFT     ,                                     KC_ENTER      , _______       ,
+                                              _______       , ALTTAB        ,                                     KC_ENTER      , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
 	[_NAVL] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
-        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , VOLUP     ,           LCTL(KC_R)  , KC_HOME       , KC_UP         , KC_END    , ZOOMOUT   , _______   ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , LCTL(KC_P)    , VOLUP     ,           LCTL(KC_R)  , KC_HOME       , KC_UP         , KC_END    , ZOOMOUT   , _______   ,
         _______, OS_GUI     , OS_ALT        , OS_SHFT       , OS_CTRL       , VOLDN     ,           LCTL(KC_Z)  , KC_LEFT       , KC_DOWN       , KC_RIGHT  , ZOOMRES   , _______   ,
-        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           KC_DEL      , KC_PGDN       , KC_PGUP       , KC_CAPS   , ZOOMIN    , _______   ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , VOLMUTE   ,           KC_DEL      , KC_PGDN       , KC_PGUP       , KC_CAPS   , ZOOMIN    , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
-                                              _______       , _______       ,                                     LCTL(KC_P)    , LCTL(KC_C)    ,
-                                              _______       , _______       ,                                     LCTL(KC_X)    , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
 	[_SYMB] = LAYOUT_5x6(
