@@ -21,18 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define SPLIT_USB_DETECT
 #define SPLIT_USB_TIMEOUT 2000
-#define TAPPING_TERM 240
-#define IGNORE_MOD_TAP_INTERRUPT
+
+#define TAPPING_TERM 200
+/* #define IGNORE_MOD_TAP_INTERRUPT */
 
 #define MASTER_LEFT
 
-// #define IGNORE_MOD_TAP_INTERRUPT
-// #define TAPPING_FORCE_HOLD
-// #undef TAPPING_TERM
-// #define TAPPING_TERM 240
-// #define RETRO_TAPPING
-//
-//
 // #undef MOUSEKEY_DELAY
 // #define MOUSEKEY_DELAY 5
 // #undef MOUSEKEY_INTERVAL
