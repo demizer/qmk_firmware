@@ -7,6 +7,7 @@ enum layer_names {
     _NAVL,
     _SYMB,
     _NUML,
+    _MEGA,
 };
 
 #define VOLUP KC_KB_VOLUME_UP
@@ -17,7 +18,22 @@ enum layer_names {
 #define ZOOMRES LCTL(KC_0)
 #define LA_SYM MO(_SYMB)
 #define LA_NAV MO(_NAVL)
+#define LA_MEG MO(_MEGA)
 #define ALTTAB LALT(KC_TAB)
+#define CANCEL LCTL(KC_C)
+#define WEB LGUI(KC_W)
+#define EDIT LGUI(KC_H)
+#define TERM LGUI(KC_T)
+#define NOTES LGUI(KC_N)
+#define SLACK LGUI(KC_S)
+#define FILES LGUI(KC_F)
+#define REVIEW LGUI(KC_R)
+#define MAXIMIZE LGUI(KC_M)
+#define MISC LGUI(KC_I)
+#define TERMCOPY LCTL(LSFT(KC_C))
+#define TERMPAST LCTL(LSFT(KC_V))
+#define MT_CAPS MT(MOD_RCTL, KC_CAPS)
+#define KC_SWIN MEH(KC_SPACE)
 
 typedef enum {
     TD_NONE,
@@ -50,6 +66,8 @@ enum {
     CMDTIL,
     COMMAQ,
     DOTXLM,
+    F5SHFT,
+    F4CTRL,
 };
 
 td_state_t cur_dance(qk_tap_dance_state_t *state);
@@ -61,27 +79,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
         _______, TD(SUPERE) , TD(COMMAQ)    , TD(DOTXLM)    , KC_P          , KC_Y      ,           KC_F        , KC_G          , KC_C          , KC_R      , KC_L      , _______   ,
-        _______, KC_A       , KC_O          , KC_E          , KC_U          , KC_I      ,           KC_D        , KC_H          , KC_T          , KC_N      , KC_S      , _______   ,
-        _______, TD(CMDTIL) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , KC_V      , KC_Z      , _______   ,
+        KC_LCTL, KC_A       , KC_O          , KC_E          , KC_U          , KC_I      ,           KC_D        , KC_H          , KC_T          , KC_N      , KC_S      , MT_CAPS   ,
+        KC_ESC , TD(CMDTIL) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , KC_V      , KC_Z      , KC_SWIN   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               LA_NAV        , KC_BACKSPACE  ,                                     KC_SPC        , LA_SYM        ,
-                                              _______       , ALTTAB        ,                                     KC_ENTER      , _______       ,
+                                              KC_LSFT       , LA_MEG        ,                                     KC_ENTER      , KC_RSFT       ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
 	[_NAVL] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
         _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , LCTL(KC_P)    , VOLUP     ,           LCTL(KC_R)  , KC_HOME       , KC_UP         , KC_END    , ZOOMOUT   , _______   ,
         _______, OS_GUI     , OS_ALT        , OS_SHFT       , OS_CTRL       , VOLDN     ,           LCTL(KC_Z)  , KC_LEFT       , KC_DOWN       , KC_RIGHT  , ZOOMRES   , _______   ,
-        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , VOLMUTE   ,           KC_DEL      , KC_PGDN       , KC_PGUP       , KC_CAPS   , ZOOMIN    , _______   ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , VOLMUTE   ,           KC_DEL      , KC_PGDN       , KC_PGUP       , _______   , ZOOMIN    , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
-                                              _______       , _______       ,                                     _______       , _______       ,
-                                              _______       , _______       ,                                     _______       , _______       ,
+                                              _______       , _______       ,                                     TERMPAST      , _______       ,
+                                              _______       , _______       ,                                     TERMCOPY      , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
 	[_SYMB] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
         _______, KC_ESC     , KC_LBRC       , KC_LCBR       , KC_LPRN       , KC_LT     ,           KC_GT       , KC_RPRN       , KC_RCBR       , KC_RBRC   , XXXXXXX   , _______   ,
-        _______, KC_TAB     , KC_PLUS       , KC_AT         , KC_HASH       , XXXXXXX   ,           KC_SLASH    , OS_CTRL       , OS_SHFT       , OS_ALT    , OS_GUI    , _______   ,
+        _______, KC_TAB     , KC_PLUS       , KC_AT         , KC_HASH       , KC_DQUO   ,           KC_SLASH    , OS_CTRL       , OS_SHFT       , OS_ALT    , OS_GUI    , _______   ,
         _______, XXXXXXX    , XXXXXXX       , KC_ASTERISK   , KC_CIRC       , KC_PERC   ,           KC_AMPERSAND, KC_DOLLAR     , KC_EQUAL      , KC_BSLS   , KC_PIPE   , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               _______       , KC_MINS       ,                                     _______       , _______       ,
@@ -90,9 +108,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[_NUML] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
-        _______, KC_7       , KC_5          , KC_3          , KC_1          , KC_9      ,           KC_8        , KC_0          , KC_2          , KC_4      , KC_6      , _______   ,
-        _______, OS_GUI     , OS_ALT        , OS_SHFT       , OS_CTRL       , KC_F11    ,           KC_F12      , OS_CTRL       , OS_SHFT       , OS_ALT    , OS_GUI    , _______   ,
-        _______, KC_F7      , KC_F5         , KC_F3         , KC_F1         , KC_F9     ,           KC_F10      , KC_F2         , KC_F4         , KC_F6     , KC_F8     , _______   ,
+        _______, KC_F12     , KC_F3         , KC_F2         , KC_F1         , XXXXXXX   ,           XXXXXXX     , KC_7          , KC_8          , KC_9      , XXXXXXX   , _______   ,
+        _______, KC_F11     , KC_F6         , TD(F5SHFT)    , TD(F4CTRL)    , KC_BSPC   ,           KC_DOT      , KC_4          , KC_5          , KC_6      , KC_EQUAL  , _______   ,
+        _______, KC_F10     , KC_F9         , KC_F8         , KC_F7         , XXXXXXX   ,           KC_0        , KC_1          , KC_2          , KC_3      , KC_MINS   , _______   ,
+                              _______       , _______       ,                                                                     _______       , _______   ,
+                                              _______       , _______       ,                                     _______       , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ,
+                                              _______       , _______       ,                                     _______       , _______       ),
+
+	[_MEGA] = LAYOUT_5x6(
+        _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           FILES       , XXXXXXX       , CANCEL        , XXXXXXX   , XXXXXXX   , XXXXXXX       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , MISC      ,           XXXXXXX     , EDIT          , TERM          , NOTES     , SLACK     , XXXXXXX       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           XXXXXXX     , MAXIMIZE      , WEB           , XXXXXXX   , XXXXXXX   , XXXXXXX       ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               _______       , _______       ,                                     _______       , _______       ,
                                               _______       , _______       ,                                     _______       , _______       ,
@@ -248,9 +276,73 @@ void cmdtil_reset(qk_tap_dance_state_t *state, void *user_data) {
     cmdtil_state.state = TD_NONE;
 }
 
+static td_tap_t f5shft_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void f5shft_finished(qk_tap_dance_state_t *state, void *user_data) {
+    f5shft_state.state = cur_dance(state);
+    switch (f5shft_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_F5); break;
+        case TD_SINGLE_HOLD: register_code16(KC_LSFT); break;
+        // case TD_DOUBLE_TAP: register_code16(KC_GRAVE); break;
+        // case TD_DOUBLE_HOLD: register_code16(KC_GRAVE); break;
+        // case TD_DOUBLE_SINGLE_TAP: tap_code(KC_SCLN); register_code16(KC_SCLN);
+        default:
+            break;
+    }
+}
+
+void f5shft_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (f5shft_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_F5); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_LSFT); break;
+        // case TD_DOUBLE_TAP: unregister_code16(KC_GRAVE); break;
+        // case TD_DOUBLE_HOLD: unregister_code16(KC_GRAVE);
+        // case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_SCLN);
+        default:
+            break;
+    }
+    f5shft_state.state = TD_NONE;
+}
+
+static td_tap_t f4ctrl_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void f4ctrl_finished(qk_tap_dance_state_t *state, void *user_data) {
+    f4ctrl_state.state = cur_dance(state);
+    switch (f4ctrl_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_F4); break;
+        case TD_SINGLE_HOLD: register_code16(KC_LCTL); break;
+        // case TD_DOUBLE_TAP: register_code16(KC_GRAVE); break;
+        // case TD_DOUBLE_HOLD: register_code16(KC_GRAVE); break;
+        // case TD_DOUBLE_SINGLE_TAP: tap_code(KC_SCLN); register_code16(KC_SCLN);
+        default:
+            break;
+    }
+}
+
+void f4ctrl_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (f4ctrl_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_F4); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_LCTL); break;
+        // case TD_DOUBLE_TAP: unregister_code16(KC_GRAVE); break;
+        // case TD_DOUBLE_HOLD: unregister_code16(KC_GRAVE);
+        // case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_SCLN);
+        default:
+            break;
+    }
+    f4ctrl_state.state = TD_NONE;
+}
+
 qk_tap_dance_action_t tap_dance_actions[] = {
     [SUPERE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, supere_finished, supere_reset),
     [CMDTIL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, cmdtil_finished, cmdtil_reset),
     [COMMAQ] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_QUES),
     [DOTXLM] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_EXLM),
+    [F5SHFT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, f5shft_finished, f5shft_reset),
+    [F4CTRL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, f4ctrl_finished, f4ctrl_reset),
 };
