@@ -34,6 +34,8 @@ enum layer_names {
 #define TERMPAST LCTL(LSFT(KC_V))
 #define MT_CAPS MT(MOD_RCTL, KC_CAPS)
 #define KC_SWIN MEH(KC_SPACE)
+#define IDE_NEXT LCTL(KC_N)
+#define IDE_PREV LCTL(KC_P)
 
 typedef enum {
     TD_NONE,
@@ -78,28 +80,28 @@ void supere_reset(qk_tap_dance_state_t *state, void *user_data);
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
-        _______, TD(SUPERE) , TD(COMMAQ)    , TD(DOTXLM)    , KC_P          , KC_Y      ,           KC_F        , KC_G          , KC_C          , KC_R      , KC_L      , _______   ,
+        KC_LGUI, TD(SUPERE) , TD(COMMAQ)    , TD(DOTXLM)    , KC_P          , KC_Y      ,           KC_F        , KC_G          , KC_C          , KC_R      , KC_L      , KC_RGUI   ,
         KC_LCTL, KC_A       , KC_O          , KC_E          , KC_U          , KC_I      ,           KC_D        , KC_H          , KC_T          , KC_N      , KC_S      , MT_CAPS   ,
         KC_ESC , TD(CMDTIL) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , KC_V      , KC_Z      , KC_SWIN   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               LA_NAV        , KC_BACKSPACE  ,                                     KC_SPC        , LA_SYM        ,
                                               KC_LSFT       , LA_MEG        ,                                     KC_ENTER      , KC_RSFT       ,
-                                              _______       , _______       ,                                     _______       , _______       ),
+                                              IDE_PREV      , _______       ,                                     _______       , IDE_NEXT      ),
 
 	[_NAVL] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
-        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , LCTL(KC_P)    , VOLUP     ,           LCTL(KC_R)  , KC_HOME       , KC_UP         , KC_END    , ZOOMOUT   , _______   ,
-        _______, OS_GUI     , OS_ALT        , OS_SHFT       , OS_CTRL       , VOLDN     ,           LCTL(KC_Z)  , KC_LEFT       , KC_DOWN       , KC_RIGHT  , ZOOMRES   , _______   ,
-        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , VOLMUTE   ,           KC_DEL      , KC_PGDN       , KC_PGUP       , _______   , ZOOMIN    , _______   ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , LCTL(KC_P)    , VOLUP     ,           _______     , KC_HOME       , KC_UP         , KC_END    , ZOOMOUT   , XXXXXXX   ,
+        _______, KC_LGUI    , OS_ALT        , KC_LSFT       , KC_LCTL       , VOLDN     ,           _______     , KC_LEFT       , KC_DOWN       , KC_RIGHT  , ZOOMRES   , KC_PGUP   ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , VOLMUTE   ,           _______     , _______       , _______       , _______   , ZOOMIN    , KC_PGDN   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               _______       , _______       ,                                     TERMPAST      , _______       ,
-                                              _______       , _______       ,                                     TERMCOPY      , _______       ,
+                                              _______       , _______       ,                                     TERMCOPY      , KC_DEL        ,
                                               _______       , _______       ,                                     _______       , _______       ),
 
 	[_SYMB] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
         _______, KC_ESC     , KC_LBRC       , KC_LCBR       , KC_LPRN       , KC_LT     ,           KC_GT       , KC_RPRN       , KC_RCBR       , KC_RBRC   , XXXXXXX   , _______   ,
-        _______, KC_TAB     , KC_PLUS       , KC_AT         , KC_HASH       , KC_DQUO   ,           KC_SLASH    , OS_CTRL       , OS_SHFT       , OS_ALT    , OS_GUI    , _______   ,
+        _______, KC_TAB     , KC_PLUS       , KC_AT         , KC_HASH       , KC_DQUO   ,           KC_SLASH    , XXXXXXX       , OS_ALT        , XXXXXXX   , XXXXXXX    , _______   ,
         _______, XXXXXXX    , XXXXXXX       , KC_ASTERISK   , KC_CIRC       , KC_PERC   ,           KC_AMPERSAND, KC_DOLLAR     , KC_EQUAL      , KC_BSLS   , KC_PIPE   , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               _______       , KC_MINS       ,                                     _______       , _______       ,
@@ -109,7 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_NUML] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
         _______, KC_F12     , KC_F3         , KC_F2         , KC_F1         , XXXXXXX   ,           XXXXXXX     , KC_7          , KC_8          , KC_9      , XXXXXXX   , _______   ,
-        _______, KC_F11     , KC_F6         , TD(F5SHFT)    , TD(F4CTRL)    , KC_BSPC   ,           KC_DOT      , KC_4          , KC_5          , KC_6      , KC_EQUAL  , _______   ,
+        _______, KC_F11     , KC_F6         , KC_F5         , KC_F4         , KC_BSPC   ,           KC_DOT      , KC_4          , KC_5          , KC_6      , KC_EQUAL  , _______   ,
         _______, KC_F10     , KC_F9         , KC_F8         , KC_F7         , XXXXXXX   ,           KC_0        , KC_1          , KC_2          , KC_3      , KC_MINS   , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               _______       , _______       ,                                     _______       , _______       ,
@@ -118,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[_MEGA] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
-        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           FILES       , XXXXXXX       , CANCEL        , XXXXXXX   , XXXXXXX   , XXXXXXX       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           FILES       , XXXXXXX       , XXXXXXX       , XXXXXXX   , XXXXXXX   , XXXXXXX       ,
         _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , MISC      ,           XXXXXXX     , EDIT          , TERM          , NOTES     , SLACK     , XXXXXXX       ,
         _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           XXXXXXX     , MAXIMIZE      , WEB           , XXXXXXX   , XXXXXXX   , XXXXXXX       ,
                               _______       , _______       ,                                                                     _______       , _______   ,
