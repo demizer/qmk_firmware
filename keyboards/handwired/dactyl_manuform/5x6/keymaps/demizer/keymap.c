@@ -80,9 +80,9 @@ void supere_reset(qk_tap_dance_state_t *state, void *user_data);
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[_BASE] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
-        KC_LGUI, TD(SUPERE) , TD(COMMAQ)    , TD(DOTXLM)    , KC_P          , KC_Y      ,           KC_F        , KC_G          , KC_C          , KC_R      , KC_L      , KC_RGUI   ,
-        KC_LCTL, KC_A       , KC_O          , KC_E          , KC_U          , KC_I      ,           KC_D        , KC_H          , KC_T          , KC_N      , KC_S      , MT_CAPS   ,
-        KC_ESC , TD(CMDTIL) , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , KC_V      , KC_Z      , KC_SWIN   ,
+        KC_LGUI, KC_QUOTE   , TD(COMMAQ)    , TD(DOTXLM)    , KC_P          , KC_Y      ,           KC_F        , KC_G          , KC_C          , KC_R      , KC_L      , KC_CAPS   ,
+        KC_LCTL, KC_A       , KC_O          , KC_E          , KC_U          , KC_I      ,           KC_D        , KC_H          , KC_T          , KC_N      , KC_S      , KC_RCTL   ,
+        KC_ESC , KC_SCLN    , KC_Q          , KC_J          , KC_K          , KC_X      ,           KC_B        , KC_M          , KC_W          , KC_V      , KC_Z      , KC_SWIN   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               LA_NAV        , KC_BACKSPACE  ,                                     KC_SPC        , LA_SYM        ,
                                               KC_LSFT       , LA_MEG        ,                                     KC_ENTER      , KC_RSFT       ,
@@ -90,9 +90,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[_NAVL] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
-        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , LCTL(KC_P)    , VOLUP     ,           _______     , KC_HOME       , KC_UP         , KC_END    , ZOOMOUT   , XXXXXXX   ,
-        _______, KC_LGUI    , OS_ALT        , KC_LSFT       , KC_LCTL       , VOLDN     ,           _______     , KC_LEFT       , KC_DOWN       , KC_RIGHT  , ZOOMRES   , KC_PGUP   ,
-        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , VOLMUTE   ,           _______     , _______       , _______       , _______   , ZOOMIN    , KC_PGDN   ,
+        _______, XXXXXXX    , XXXXXXX       , LCTL(KC_C)    , LCTL(KC_P)    , VOLUP     ,           _______     , KC_HOME       , KC_UP         , KC_END    , ZOOMOUT   , XXXXXXX   ,
+        _______, KC_LGUI    , OS_ALT        , KC_LSFT       , KC_LCTL       , VOLDN     ,           KC_GRAVE    , KC_LEFT       , KC_DOWN       , KC_RIGHT  , ZOOMRES   , KC_PGUP   ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , VOLMUTE   ,           KC_TILD     , _______       , _______       , _______   , ZOOMIN    , KC_PGDN   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               _______       , _______       ,                                     TERMPAST      , _______       ,
                                               _______       , _______       ,                                     TERMCOPY      , KC_DEL        ,
@@ -100,8 +100,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[_SYMB] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______   ,
-        _______, KC_ESC     , KC_LBRC       , KC_LCBR       , KC_LPRN       , KC_LT     ,           KC_GT       , KC_RPRN       , KC_RCBR       , KC_RBRC   , XXXXXXX   , _______   ,
-        _______, KC_TAB     , KC_PLUS       , KC_AT         , KC_HASH       , KC_DQUO   ,           KC_SLASH    , XXXXXXX       , OS_ALT        , XXXXXXX   , XXXXXXX    , _______   ,
+        _______, XXXXXXX    , KC_LBRC       , KC_LCBR       , KC_LPRN       , KC_LT     ,           KC_GT       , KC_RPRN       , KC_RCBR       , KC_RBRC   , XXXXXXX   , _______   ,
+        _______, KC_TAB     , KC_PLUS       , KC_AT         , KC_HASH       , KC_DQUO   ,           KC_SLASH    , XXXXXXX       , OS_ALT        , XXXXXXX   , XXXXXXX   , _______   ,
         _______, XXXXXXX    , XXXXXXX       , KC_ASTERISK   , KC_CIRC       , KC_PERC   ,           KC_AMPERSAND, KC_DOLLAR     , KC_EQUAL      , KC_BSLS   , KC_PIPE   , _______   ,
                               _______       , _______       ,                                                                     _______       , _______   ,
                                               _______       , KC_MINS       ,                                     _______       , _______       ,
@@ -120,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[_MEGA] = LAYOUT_5x6(
         _______, _______    , _______       , _______       , _______       , _______   ,           _______     , _______       , _______       , _______   , _______   , _______       ,
-        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           FILES       , XXXXXXX       , XXXXXXX       , XXXXXXX   , XXXXXXX   , XXXXXXX       ,
+        _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           FILES       , XXXXXXX       , XXXXXXX       , REVIEW    , XXXXXXX   , XXXXXXX       ,
         _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , MISC      ,           XXXXXXX     , EDIT          , TERM          , NOTES     , SLACK     , XXXXXXX       ,
         _______, XXXXXXX    , XXXXXXX       , XXXXXXX       , XXXXXXX       , XXXXXXX   ,           XXXXXXX     , MAXIMIZE      , WEB           , XXXXXXX   , XXXXXXX   , XXXXXXX       ,
                               _______       , _______       ,                                                                     _______       , _______   ,
@@ -226,8 +226,8 @@ void supere_finished(qk_tap_dance_state_t *state, void *user_data) {
     switch (supere_state.state) {
         case TD_SINGLE_TAP: register_code16(KC_QUOTE); break;
         case TD_SINGLE_HOLD: register_code16(KC_GRAVE); break;
-        case TD_DOUBLE_TAP: register_code16(KC_ESC); break;
-        case TD_DOUBLE_HOLD: register_code16(KC_ESC); break;
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
         case TD_DOUBLE_SINGLE_TAP: tap_code(KC_QUOTE); register_code16(KC_QUOTE);
         default:
             break;
@@ -238,9 +238,9 @@ void supere_reset(qk_tap_dance_state_t *state, void *user_data) {
     switch (supere_state.state) {
         case TD_SINGLE_TAP: unregister_code16(KC_QUOTE); break;
         case TD_SINGLE_HOLD: unregister_code16(KC_GRAVE); break;
-        case TD_DOUBLE_TAP: unregister_code16(KC_ESC); break;
-        case TD_DOUBLE_HOLD: unregister_code16(KC_ESC);
-        case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_QUOTE);
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: break;
         default:
             break;
     }
@@ -257,8 +257,8 @@ void cmdtil_finished(qk_tap_dance_state_t *state, void *user_data) {
     switch (cmdtil_state.state) {
         case TD_SINGLE_TAP: register_code16(KC_SCLN); break;
         case TD_SINGLE_HOLD: register_code16(KC_TILD); break;
-        case TD_DOUBLE_TAP: register_code16(KC_GRAVE); break;
-        case TD_DOUBLE_HOLD: register_code16(KC_GRAVE); break;
+        case TD_DOUBLE_TAP:  break;
+        case TD_DOUBLE_HOLD: break;
         case TD_DOUBLE_SINGLE_TAP: tap_code(KC_SCLN); register_code16(KC_SCLN);
         default:
             break;
@@ -269,8 +269,8 @@ void cmdtil_reset(qk_tap_dance_state_t *state, void *user_data) {
     switch (cmdtil_state.state) {
         case TD_SINGLE_TAP: unregister_code16(KC_SCLN); break;
         case TD_SINGLE_HOLD: unregister_code16(KC_TILD); break;
-        case TD_DOUBLE_TAP: unregister_code16(KC_GRAVE); break;
-        case TD_DOUBLE_HOLD: unregister_code16(KC_GRAVE);
+        case TD_DOUBLE_TAP: break;
+        case TD_DOUBLE_HOLD: break;
         case TD_DOUBLE_SINGLE_TAP: unregister_code16(KC_SCLN);
         default:
             break;
