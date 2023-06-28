@@ -26,9 +26,9 @@
  * Configure the global tapping term (default: 200ms).
  * If you have a lot of accidental mod activations, crank up the tapping term.
  */
-#ifndef TAPPING_TERM
-#    define TAPPING_TERM 160
-#endif // TAPPING_TERM
+/* #ifndef TAPPING_TERM */
+/* #    define TAPPING_TERM 160 */
+/* #endif // TAPPING_TERM */
 
 // disable trackpad taps
 // #define CIRQUE_PINNACLE_TAPPING_TERM 0
