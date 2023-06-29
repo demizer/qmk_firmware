@@ -31,8 +31,8 @@ enum dilemma_keymap_layers {
 // #define DILEMMA_AUTO_SNIPING_ON_LAYER LAYER_POINTER
 
 #define SPC_NUM LT(LAYER_NUMERAL, KC_SPC)
-#define TAB_NAV LT(LAYER_NAVIGATION, KC_TAB)
-#define ENT_SYM LT(LAYER_SYMBOLS, KC_ENT)
+#define TAB_SYM LT(LAYER_SYMBOLS, KC_TAB)
+#define ENT_NAV LT(LAYER_NAVIGATION, KC_ENT)
 #define BSP_FUN LT(LAYER_FUNCTION, KC_BSPC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 
@@ -46,10 +46,10 @@ enum dilemma_keymap_layers {
 // clang-format off
 /** \brief QWERTY layout (3 rows, 10 columns). */
 #define LAYOUT_LAYER_BASE                                                                                    \
-    KC_SLSH,    KC_COMM,     KC_DOT,       KC_P,       KC_Y,       KC_F,    KC_G,    KC_C,    KC_R,    KC_L, \
+    KC_QUOT,    KC_COMM,     KC_DOT,       KC_P,       KC_Y,       KC_F,    KC_G,    KC_C,    KC_R,    KC_L, \
        KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_D,    KC_H,    KC_T,    KC_N,    KC_S, \
     KC_COLN,       KC_Q,       KC_J,       KC_K,       KC_X,       KC_B,    KC_M,    KC_W,    KC_V,    KC_Z, \
-                            CW_TOGG,    TAB_NAV,    SPC_NUM,    ENT_SYM, BSP_FUN, KC_MUTE
+                            CW_TOGG,    TAB_SYM,    SPC_NUM,    ENT_NAV, BSP_FUN, KC_MUTE
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
@@ -65,9 +65,9 @@ enum dilemma_keymap_layers {
  */
 #define LAYOUT_LAYER_NUMERAL                                                                   \
     _______________DEAD_HALF_ROW_______________, KC_LBRC,    KC_7,    KC_8,    KC_9, KC_RBRC,  \
-    KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, KC_COMM,  KC_DOT,    KC_4,    KC_5,    KC_6,  KC_EQL,  \
-    _______________DEAD_HALF_ROW_______________,    KC_0,    KC_1,    KC_2,    KC_3, KC_MINS,  \
-                      XXXXXXX, XXXXXXX, _______, KC_SCLN, KC_BSLS, XXXXXXX
+    ______________HOME_ROW_GACS_L______________, KC_SCLN,    KC_4,    KC_5,    KC_6,  KC_EQL,  \
+    _______________DEAD_HALF_ROW_______________,    KC_0,    KC_1,    KC_2,    KC_3, KC_UNDS,  \
+                      XXXXXXX, XXXXXXX, _______, KC_QUES, KC_BSLS, XXXXXXX
 
 /**
  * \brief Navigation layer.
@@ -78,10 +78,10 @@ enum dilemma_keymap_layers {
  * base layer to avoid having to layer change mid edit and to enable auto-repeat.
  */
 #define LAYOUT_LAYER_NAVIGATION                                                               \
-    _______________DEAD_HALF_ROW_______________, KC_CAPS, KC_HOME,   KC_UP,  KC_END, XXXXXXX, \
-    ______________HOME_ROW_GACS_L______________, KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, \
-    _______________DEAD_HALF_ROW_______________, KC_PGDN,  KC_DEL,  KC_INS, XXXXXXX, XXXXXXX, \
-                      XXXXXXX, XXXXXXX, _______,  KC_ENT, KC_BSPC,  KC_DEL
+    KC_CAPS, KC_HOME,   KC_UP,  KC_END, XXXXXXX, _______________DEAD_HALF_ROW_______________, \
+    KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, ______________HOME_ROW_GACS_R______________, \
+    KC_PGDN,  KC_DEL,  KC_INS,  KC_DEL, KC_PGDN, _______________DEAD_HALF_ROW_______________, \
+                      XXXXXXX, XXXXXXX,  KC_ESC, _______, XXXXXXX,  XXXXXXX
 
 /**
  * \brief Function layer.
@@ -93,7 +93,7 @@ enum dilemma_keymap_layers {
  */
 #define LAYOUT_LAYER_FUNCTION                                                                 \
     KC_PSCR,   KC_F7,   KC_F8,   KC_F9,  KC_F12, _______________DEAD_HALF_ROW_______________, \
-    KC_SCRL,   KC_F4,   KC_F5,   KC_F6,  KC_F11, ______________HOME_ROW_GACS_L______________, \
+    KC_SCRL,   KC_F4,   KC_F5,   KC_F6,  KC_F11, ______________HOME_ROW_GACS_R______________, \
     KC_PAUS,   KC_F1,   KC_F2,   KC_F3,  KC_F10, _______________DEAD_HALF_ROW_______________, \
                       XXXXXXX, XXXXXXX,  KC_ESC, XXXXXXX, _______, XXXXXXX
 
@@ -112,10 +112,10 @@ enum dilemma_keymap_layers {
  * `KC_RPRN`.
  */
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
-    KC_LCBR, KC_AMPR, KC_ASTR, KC_LPRN, KC_RCBR, _______________DEAD_HALF_ROW_______________, \
-    KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, ______________HOME_ROW_GACS_R______________, \
-    KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, _______________DEAD_HALF_ROW_______________, \
-                      KC_LPRN,  KC_GRV, KC_UNDS, _______, XXXXXXX, XXXXXXX
+    _______________DEAD_HALF_ROW_______________, KC_LCBR, KC_AMPR, KC_ASTR, KC_RPRN, KC_RCBR, \
+    ______________HOME_ROW_GACS_L______________, KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, \
+    _______________DEAD_HALF_ROW_______________, KC_LPRN, KC_EXLM,   KC_AT, KC_HASH, KC_MINS, \
+                      XXXXXXX, _______, XXXXXXX, KC_SLSH, KC_TILD, XXXXXXX
 
 /**
  * \brief Add Home Row mod to a layout.
