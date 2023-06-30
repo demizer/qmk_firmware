@@ -65,9 +65,9 @@ enum dilemma_keymap_layers {
  */
 #define LAYOUT_LAYER_NUMERAL                                                                   \
     _______________DEAD_HALF_ROW_______________, KC_LBRC,    KC_7,    KC_8,    KC_9, KC_RBRC,  \
-    ______________HOME_ROW_GACS_L______________, KC_SCLN,    KC_4,    KC_5,    KC_6,  KC_EQL,  \
+    KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, KC_BSLS,  KC_DOT,    KC_4,    KC_5,    KC_6,  KC_EQL,  \
     _______________DEAD_HALF_ROW_______________,    KC_0,    KC_1,    KC_2,    KC_3, KC_UNDS,  \
-                      XXXXXXX, XXXXXXX, _______, KC_QUES, KC_BSLS, XXXXXXX
+                      XXXXXXX, XXXXXXX, _______, KC_QUES, _______, XXXXXXX
 
 /**
  * \brief Navigation layer.
