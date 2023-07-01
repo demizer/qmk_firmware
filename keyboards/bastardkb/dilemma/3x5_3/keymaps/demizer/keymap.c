@@ -18,6 +18,38 @@
 
 #include QMK_KEYBOARD_H
 
+typedef enum {
+    TD_NONE,
+    TD_UNKNOWN,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_TAP,
+    TD_DOUBLE_HOLD,
+    TD_DOUBLE_SINGLE_TAP, // Send two single taps
+    TD_TRIPLE_TAP,
+    TD_TRIPLE_HOLD
+} td_state_t;
+
+typedef struct {
+    bool is_press_action;
+    td_state_t state;
+} td_tap_t;
+
+// Tap dance enums
+enum {
+    SUPERQ,
+    COMMAQ,
+    DOTXLM,
+    /* CMDTIL, */
+    /* F5SHFT, */
+    /* F4CTRL, */
+};
+
+td_state_t cur_dance(tap_dance_state_t *state);
+
+void superq_finished(tap_dance_state_t *state, void *user_data);
+void superq_reset(tap_dance_state_t *state, void *user_data);
+
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
     LAYER_NUMERAL,
@@ -43,10 +75,71 @@ enum dilemma_keymap_layers {
 #    define SNIPING KC_NO
 #endif // !POINTING_DEVICE_ENABLE
 
+td_state_t cur_dance(tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
+        // Key has not been interrupted, but the key is still held. Means you want to send a 'HOLD'.
+        else return TD_SINGLE_HOLD;
+    } else if (state->count == 2) {
+        // TD_DOUBLE_SINGLE_TAP is to distinguish between typing "pepper", and actually wanting a double tap
+        // action when hitting 'pp'. Suggested use case for this return value is when you want to send two
+        // keystrokes of the key, and not the 'double tap' action/macro.
+        if (state->interrupted) return TD_DOUBLE_SINGLE_TAP;
+        else if (state->pressed) return TD_DOUBLE_HOLD;
+        else return TD_DOUBLE_TAP;
+    }
+
+    // Assumes no one is trying to type the same letter three times (at least not quickly).
+    // If your tap dance key is 'KC_W', and you want to type "www." quickly - then you will need to add
+    // an exception here to return a 'TD_TRIPLE_SINGLE_TAP', and define that enum just like 'TD_DOUBLE_SINGLE_TAP'
+    if (state->count == 3) {
+        if (state->interrupted || !state->pressed) return TD_TRIPLE_TAP;
+        else return TD_TRIPLE_HOLD;
+    } else return TD_UNKNOWN;
+}
+
+static td_tap_t superq_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void superq_finished(tap_dance_state_t *state, void *user_data) {
+    superq_state.state = cur_dance(state);
+    switch (superq_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_QUOTE); break;
+        case TD_SINGLE_HOLD: register_code16(KC_GRAVE); break;
+        case TD_DOUBLE_TAP: register_code16(KC_ESC); break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: register_code16(KC_QUOTE); break;
+        /* case TD_DOUBLE_SINGLE_TAP: tap_code(KC_QUOTE); register_code16(KC_QUOTE); */
+        default:
+            break;
+    }
+}
+
+void superq_reset(tap_dance_state_t *state, void *user_data) {
+    switch (superq_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_QUOTE); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_GRAVE); break;
+        case TD_DOUBLE_TAP: unregister_code16(KC_ESC); break;
+        /* case TD_DOUBLE_HOLD: break; */
+        /* case TD_DOUBLE_SINGLE_TAP: break; */
+        default:
+            break;
+    }
+    superq_state.state = TD_NONE;
+}
+
+tap_dance_action_t tap_dance_actions[] = {
+    [SUPERQ] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superq_finished, superq_reset),
+    [COMMAQ] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_QUES),
+    [DOTXLM] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_EXLM),
+};
+
 // clang-format off
 /** \brief QWERTY layout (3 rows, 10 columns). */
 #define LAYOUT_LAYER_BASE                                                                                    \
-    KC_QUOT,    KC_COMM,     KC_DOT,       KC_P,       KC_Y,       KC_F,    KC_G,    KC_C,    KC_R,    KC_L, \
+ TD(SUPERQ), TD(COMMAQ), TD(DOTXLM),       KC_P,       KC_Y,       KC_F,    KC_G,    KC_C,    KC_R,    KC_L, \
        KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_D,    KC_H,    KC_T,    KC_N,    KC_S, \
     KC_COLN,       KC_Q,       KC_J,       KC_K,       KC_X,       KC_B,    KC_M,    KC_W,    KC_V,    KC_Z, \
                             CW_TOGG,    TAB_SYM,    SPC_NUM,    ENT_NAV, BSP_FUN, KC_MUTE
