@@ -37,7 +37,8 @@ typedef struct {
 
 // Tap dance enums
 enum {
-    SUPERQ,
+    SUPERQDK,
+    SUPERQHD,
     COMMAQ,
     DOTXLM,
     /* CMDTIL, */
@@ -47,8 +48,10 @@ enum {
 
 td_state_t cur_dance(tap_dance_state_t *state);
 
-void superq_finished(tap_dance_state_t *state, void *user_data);
-void superq_reset(tap_dance_state_t *state, void *user_data);
+void superqdk_finished(tap_dance_state_t *state, void *user_data);
+void superqdk_reset(tap_dance_state_t *state, void *user_data);
+void superqhd_finished(tap_dance_state_t *state, void *user_data);
+void superqhd_reset(tap_dance_state_t *state, void *user_data);
 
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
@@ -106,14 +109,19 @@ td_state_t cur_dance(tap_dance_state_t *state) {
     } else return TD_UNKNOWN;
 }
 
-static td_tap_t superq_state = {
+static td_tap_t superqdk_state = {
     .is_press_action = true,
     .state = TD_NONE
 };
 
-void superq_finished(tap_dance_state_t *state, void *user_data) {
-    superq_state.state = cur_dance(state);
-    switch (superq_state.state) {
+static td_tap_t superqhd_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void superqdk_finished(tap_dance_state_t *state, void *user_data) {
+    superqdk_state.state = cur_dance(state);
+    switch (superqdk_state.state) {
         case TD_SINGLE_TAP: register_code16(KC_QUOTE); break;
         case TD_SINGLE_HOLD: register_code16(KC_GRAVE); break;
         case TD_DOUBLE_TAP: register_code16(KC_ESC); break;
@@ -125,8 +133,8 @@ void superq_finished(tap_dance_state_t *state, void *user_data) {
     }
 }
 
-void superq_reset(tap_dance_state_t *state, void *user_data) {
-    switch (superq_state.state) {
+void superqdk_reset(tap_dance_state_t *state, void *user_data) {
+    switch (superqdk_state.state) {
         case TD_SINGLE_TAP: unregister_code16(KC_QUOTE); break;
         case TD_SINGLE_HOLD: unregister_code16(KC_GRAVE); break;
         case TD_DOUBLE_TAP: unregister_code16(KC_ESC); break;
@@ -135,11 +143,39 @@ void superq_reset(tap_dance_state_t *state, void *user_data) {
         default:
             break;
     }
-    superq_state.state = TD_NONE;
+    superqdk_state.state = TD_NONE;
+}
+
+void superqhd_finished(tap_dance_state_t *state, void *user_data) {
+    superqhd_state.state = cur_dance(state);
+    switch (superqhd_state.state) {
+        case TD_SINGLE_TAP: register_code16(KC_Q); break;
+        case TD_SINGLE_HOLD: register_code16(KC_GRAVE); break;
+        case TD_DOUBLE_TAP: register_code16(KC_ESC); break;
+        case TD_DOUBLE_HOLD: break;
+        case TD_DOUBLE_SINGLE_TAP: register_code16(KC_Q); break;
+        /* case TD_DOUBLE_SINGLE_TAP: tap_code(KC_QUOTE); register_code16(KC_QUOTE); */
+        default:
+            break;
+    }
+}
+
+void superqhd_reset(tap_dance_state_t *state, void *user_data) {
+    switch (superqhd_state.state) {
+        case TD_SINGLE_TAP: unregister_code16(KC_Q); break;
+        case TD_SINGLE_HOLD: unregister_code16(KC_GRAVE); break;
+        case TD_DOUBLE_TAP: unregister_code16(KC_ESC); break;
+        /* case TD_DOUBLE_HOLD: break; */
+        /* case TD_DOUBLE_SINGLE_TAP: break; */
+        default:
+            break;
+    }
+    superqhd_state.state = TD_NONE;
 }
 
 tap_dance_action_t tap_dance_actions[] = {
-    [SUPERQ] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superq_finished, superq_reset),
+    [SUPERQDK] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superqdk_finished, superqdk_reset),
+    [SUPERQHD] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, superqhd_finished, superqhd_reset),
     [COMMAQ] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_QUES),
     [DOTXLM] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_EXLM),
 };
@@ -156,13 +192,13 @@ combo_t key_combos[COMBO_COUNT] = {
 // clang-format off
 /** \brief QWERTY layout (3 rows, 10 columns). */
 #define LAYOUT_LAYER_BASE                                                                                    \
- TD(SUPERQ), TD(COMMAQ), TD(DOTXLM),       KC_P,       KC_Y,       KC_F,    KC_G,    KC_C,    KC_R,    KC_L, \
+ TD(SUPERQDK), TD(COMMAQ), TD(DOTXLM),       KC_P,       KC_Y,       KC_F,    KC_G,    KC_C,    KC_R,    KC_L, \
        KC_A,       KC_O,       KC_E,       KC_U,       KC_I,       KC_D,    KC_H,    KC_T,    KC_N,    KC_S, \
     KC_COLN,       KC_Q,       KC_J,       KC_K,       KC_X,       KC_B,    KC_M,    KC_W,    KC_V,    KC_Z, \
                             CW_TOGG,    TAB_SYM,    SPC_NUM,    ENT_NAV, BSP_FUN, KC_MUTE
 
 #define LAYOUT_LAYER_HANDS_DOWN                                                               \
-       KC_Q,    KC_C,    KC_H,    KC_P,    KC_V,    KC_K,    KC_Y,    KC_O,    KC_J, KC_SLSH, \
+ TD(SUPERQHD),    KC_C,    KC_H,    KC_P,    KC_V,    KC_K,    KC_Y,    KC_O,    KC_J, KC_SLSH, \
        KC_R,    KC_S,    KC_N,    KC_T,    KC_G,    KC_W,    KC_U,    KC_E,    KC_I,    KC_A, \
        KC_X,    KC_M,    KC_L,    KC_D,    KC_B,    KC_Z,    KC_F, KC_QUOT, KC_COMM,  KC_DOT, \
                       CW_TOGG, TAB_SYM, SPC_NUM,    ENT_NAV, BSP_FUN, KC_MUTE
