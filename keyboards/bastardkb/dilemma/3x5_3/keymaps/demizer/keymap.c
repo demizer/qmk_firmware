@@ -193,10 +193,10 @@ combo_t key_combos[COMBO_COUNT] = {
  * caps lock and insert on the inner column. Thumb keys are duplicated from the
  * base layer to avoid having to layer change mid edit and to enable auto-repeat.
  */
-#define LAYOUT_LAYER_NAVIGATION                                                               \
-    KC_CAPS, KC_HOME,   KC_UP,  KC_END, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, HANDS_DOWN, \
-    KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, ______________HOME_ROW_GACS_R______________, \
-    KC_PGDN,  KC_DEL,  KC_INS,  KC_DEL, KC_PGDN, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DVORAK, \
+#define LAYOUT_LAYER_NAVIGATION                                                                  \
+    XXXXXXX, KC_HOME,   KC_UP,  KC_END, KC_CAPS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, HANDS_DOWN, \
+    XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, ______________HOME_ROW_GACS_R______________,    \
+    XXXXXXX, XXXXXXX,  KC_INS,  KC_DEL, KC_PGDN, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DVORAK,     \
                       XXXXXXX, KC_WREF, KC_WBAK, _______, XXXXXXX,  XXXXXXX
 
 /**
