@@ -136,6 +136,15 @@ tap_dance_action_t tap_dance_actions[] = {
     [DOTXLM] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_EXLM),
 };
 
+enum combos { ESCAPE_COMBO, SUPER_COMBO };
+const uint16_t PROGMEM escape_combo[] = {ENT_NAV, BSP_FUN, COMBO_END};
+const uint16_t PROGMEM super_combo[] = {TAB_SYM, SPC_NUM, COMBO_END};
+combo_t key_combos[COMBO_COUNT] = {
+    [ESCAPE_COMBO] = COMBO(escape_combo, KC_ESC),
+    [SUPER_COMBO] = COMBO(super_combo, KC_LGUI),
+    /* COMBO(test_combo2, LCTL(KC_Z)), // keycodes with modifiers are possible too! */
+};
+
 // clang-format off
 /** \brief QWERTY layout (3 rows, 10 columns). */
 #define LAYOUT_LAYER_BASE                                                                                    \
@@ -174,7 +183,7 @@ tap_dance_action_t tap_dance_actions[] = {
     KC_CAPS, KC_HOME,   KC_UP,  KC_END, XXXXXXX, _______________DEAD_HALF_ROW_______________, \
     KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, ______________HOME_ROW_GACS_R______________, \
     KC_PGDN,  KC_DEL,  KC_INS,  KC_DEL, KC_PGDN, _______________DEAD_HALF_ROW_______________, \
-                      XXXXXXX, XXXXXXX,  KC_ESC, _______, XXXXXXX,  XXXXXXX
+                      XXXXXXX, KC_WREF, KC_WBAK, _______, XXXXXXX,  XXXXXXX
 
 /**
  * \brief Function layer.
