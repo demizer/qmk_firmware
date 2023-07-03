@@ -52,11 +52,17 @@ void superq_reset(tap_dance_state_t *state, void *user_data);
 
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
+    LAYER_HANDS_DOWN,
     LAYER_NUMERAL,
     LAYER_NAVIGATION,
     LAYER_FUNCTION,
     LAYER_POINTER,
     LAYER_SYMBOLS,
+};
+
+enum custom_keycodes {
+  DVORAK = SAFE_RANGE,
+  HANDS_DOWN
 };
 
 // Automatically enable sniping-mode on the pointer layer.
@@ -67,6 +73,8 @@ enum dilemma_keymap_layers {
 #define ENT_NAV LT(LAYER_NAVIGATION, KC_ENT)
 #define BSP_FUN LT(LAYER_FUNCTION, KC_BSPC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
+#define DF_HNDN DF(LAYER_HANDS_DOWN)
+#define DF_DVOK DF(LAYER_BASE)
 
 #ifndef POINTING_DEVICE_ENABLE
 #    define DRGSCRL KC_NO
@@ -153,6 +161,12 @@ combo_t key_combos[COMBO_COUNT] = {
     KC_COLN,       KC_Q,       KC_J,       KC_K,       KC_X,       KC_B,    KC_M,    KC_W,    KC_V,    KC_Z, \
                             CW_TOGG,    TAB_SYM,    SPC_NUM,    ENT_NAV, BSP_FUN, KC_MUTE
 
+#define LAYOUT_LAYER_HANDS_DOWN                                                               \
+       KC_Q,    KC_C,    KC_H,    KC_P,    KC_V,    KC_K,    KC_Y,    KC_O,    KC_J, KC_SLSH, \
+       KC_R,    KC_S,    KC_N,    KC_T,    KC_G,    KC_W,    KC_U,    KC_E,    KC_I,    KC_A, \
+       KC_X,    KC_M,    KC_L,    KC_D,    KC_B,    KC_Z,    KC_F, KC_QUOT, KC_COMM,  KC_DOT, \
+                      CW_TOGG, TAB_SYM, SPC_NUM,    ENT_NAV, BSP_FUN, KC_MUTE
+
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 #define ______________HOME_ROW_GACS_L______________ KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX
@@ -180,9 +194,9 @@ combo_t key_combos[COMBO_COUNT] = {
  * base layer to avoid having to layer change mid edit and to enable auto-repeat.
  */
 #define LAYOUT_LAYER_NAVIGATION                                                               \
-    KC_CAPS, KC_HOME,   KC_UP,  KC_END, XXXXXXX, _______________DEAD_HALF_ROW_______________, \
+    KC_CAPS, KC_HOME,   KC_UP,  KC_END, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, HANDS_DOWN, \
     KC_PGUP, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, ______________HOME_ROW_GACS_R______________, \
-    KC_PGDN,  KC_DEL,  KC_INS,  KC_DEL, KC_PGDN, _______________DEAD_HALF_ROW_______________, \
+    KC_PGDN,  KC_DEL,  KC_INS,  KC_DEL, KC_PGDN, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DVORAK, \
                       XXXXXXX, KC_WREF, KC_WBAK, _______, XXXXXXX,  XXXXXXX
 
 /**
@@ -275,6 +289,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_FUNCTION] = LAYOUT_wrapper(LAYOUT_LAYER_FUNCTION),
   [LAYER_POINTER] = LAYOUT_wrapper(LAYOUT_LAYER_POINTER),
   [LAYER_SYMBOLS] = LAYOUT_wrapper(LAYOUT_LAYER_SYMBOLS),
+  [LAYER_HANDS_DOWN] = LAYOUT_wrapper(
+    POINTER_MOD(HOME_ROW_MOD_GACS(LAYOUT_LAYER_HANDS_DOWN))
+  ),
 };
 // clang-format on
 
@@ -291,6 +308,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // clang-format off
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [LAYER_BASE]       = {ENCODER_CCW_CW(KC_WH_D, KC_WH_U),  ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [LAYER_HANDS_DOWN] = {ENCODER_CCW_CW(KC_WH_D, KC_WH_U),  ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [LAYER_FUNCTION]   = {ENCODER_CCW_CW(KC_DOWN, KC_UP),    ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
     [LAYER_NAVIGATION] = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP),  ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
     [LAYER_POINTER]    = {ENCODER_CCW_CW(RGB_HUD, RGB_HUI),  ENCODER_CCW_CW(RGB_SAD, RGB_SAI)},
@@ -299,3 +317,21 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 };
 // clang-format on
 #endif // ENCODER_MAP_ENABLE
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case HANDS_DOWN:
+      if (record->event.pressed) {
+        set_single_persistent_default_layer(LAYER_HANDS_DOWN);
+      }
+      return false;
+      break;
+    case DVORAK:
+      if (record->event.pressed) {
+        set_single_persistent_default_layer(LAYER_BASE);
+      }
+      return false;
+      break;
+  }
+  return true;
+}
