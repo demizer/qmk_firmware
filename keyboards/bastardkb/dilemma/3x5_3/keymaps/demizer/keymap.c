@@ -49,24 +49,25 @@ void superslsh_reset(tap_dance_state_t *state, void *user_data);
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
     LAYER_HANDS_DOWN,
-    LAYER_SYMBOLS,
     LAYER_NUMERAL,
     LAYER_NAVIGATION,
     LAYER_FUNCTION,
     LAYER_POINTER,
+    LAYER_MACRO,
 };
 
 enum custom_keycodes {
   DVORAK = SAFE_RANGE,
-  HANDS_DOWN
+  HANDS_DOWN,
+  SUDO_SYS_CTL
 };
 
 // Automatically enable sniping-mode on the pointer layer.
 #define DILEMMA_AUTO_SNIPING_ON_LAYER LAYER_POINTER
 
 #define SPC_NUM LT(LAYER_NUMERAL, KC_SPC)
-#define TAB_SYM LT(LAYER_SYMBOLS, KC_TAB)
-#define ENT_NAV LT(LAYER_NAVIGATION, KC_ENT)
+#define ENT_MACRO LT(LAYER_MACRO, KC_ENT)
+#define TAB_NAV LT(LAYER_NAVIGATION, KC_TAB)
 #define BSP_FUN LT(LAYER_FUNCTION, KC_BSPC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 #define DF_HNDN DF(LAYER_HANDS_DOWN)
@@ -145,42 +146,36 @@ tap_dance_action_t tap_dance_actions[] = {
     KC_QUOT, KC_COMM, KC_DOT,     KC_P,    KC_Y,       KC_F,    KC_G,    KC_C,    KC_R,    KC_L, \
        KC_A,    KC_O,   KC_E,     KC_U,    KC_I,       KC_D,    KC_H,    KC_T,    KC_N,    KC_S, \
     KC_COLN,    KC_Q,   KC_J,     KC_K,    KC_X,       KC_B,    KC_M,    KC_W,    KC_V,    KC_Z, \
-                     CW_TOGG,  TAB_SYM, SPC_NUM,    ENT_NAV, BSP_FUN, KC_MUTE
+                     CW_TOGG,  TAB_NAV, SPC_NUM,  ENT_MACRO, BSP_FUN, KC_MUTE
 
 #define LAYOUT_LAYER_HANDS_DOWN                                                                  \
     XXXXXXX,    KC_C,   KC_H,     KC_P,    KC_V,       KC_K,    KC_Y,    KC_O,    KC_J, KC_SLSH, \
        KC_R,    KC_S,   KC_N,     KC_T,    KC_G,       KC_W,    KC_U,    KC_E,    KC_I,    KC_A, \
        KC_X,    KC_M,   KC_L,     KC_D,    KC_B,       KC_Z,    KC_F, KC_QUOT, KC_COMM,  KC_DOT, \
-                      CW_TOGG, TAB_SYM, SPC_NUM,    ENT_NAV, BSP_FUN, KC_MUTE
+                      CW_TOGG, TAB_NAV, SPC_NUM,  ENT_MACRO, BSP_FUN, KC_MUTE
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 #define ______________HOME_ROW_GACS_L______________ KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX
 #define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI
 
-#define LAYOUT_LAYER_SYMBOLS                                                                  \
-    _______________DEAD_HALF_ROW_______________,       KC_LCBR, KC_AMPR, KC_ASTR, KC_RPRN, KC_RCBR, \
-    ______________HOME_ROW_GACS_L______________,       KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, \
-    _______________DEAD_HALF_ROW_______________,       KC_LPRN, KC_EXLM,   KC_AT, KC_HASH, KC_MINS, \
-                      XXXXXXX, _______, XXXXXXX, TD(SUPERSLSH), KC_TILD, KC_GRV
-
-#define LAYOUT_LAYER_NUMERAL                                                                   \
-    _______________DEAD_HALF_ROW_______________, KC_LBRC,    KC_7,    KC_8,    KC_9, KC_RBRC,  \
-    ______________HOME_ROW_GACS_L______________,  KC_DOT,    KC_4,    KC_5,    KC_6,  KC_EQL,  \
-    _______________DEAD_HALF_ROW_______________,    KC_0,    KC_1,    KC_2,    KC_3, KC_UNDS,  \
-                      XXXXXXX, XXXXXXX, _______, XXXXXXX, _______, XXXXXXX
-
 #define LAYOUT_LAYER_NAVIGATION                                                                  \
-     KC_ESC, KC_HOME,   KC_UP,  KC_END, KC_CAPS, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, HANDS_DOWN, \
-    XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGUP, ______________HOME_ROW_GACS_R______________,    \
-    XXXXXXX, XXXXXXX,  KC_INS,  KC_DEL, KC_PGDN, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DVORAK,     \
-                      XXXXXXX, KC_WREF, KC_WBAK, _______, XXXXXXX,  XXXXXXX
+    _______________DEAD_HALF_ROW_______________,  KC_DEL, KC_WBAK,  KC_ESC, KC_WFWD, KC_WREF,    \
+    ______________HOME_ROW_GACS_L______________, KC_CAPS, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,    \
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PSCR,  KC_INS, KC_HOME, KC_PGDN, KC_PGUP,  KC_END,    \
+                      XXXXXXX, _______, XXXXXXX,  KC_ENT, KC_BSPC, XXXXXXX
+
+#define LAYOUT_LAYER_NUMERAL                                                                         \
+    _______________DEAD_HALF_ROW_______________,       KC_LBRC,    KC_7,    KC_8,    KC_9, KC_RBRC,  \
+    ______________HOME_ROW_GACS_L______________,        KC_GRV,    KC_4,    KC_5,    KC_6,  KC_EQL,  \
+    _______________DEAD_HALF_ROW_______________,          KC_0,    KC_1,    KC_2,    KC_3, KC_MINS,  \
+                      XXXXXXX, XXXXXXX, _______, TD(SUPERSLSH), KC_BSPC, XXXXXXX
 
 #define LAYOUT_LAYER_FUNCTION                                                                 \
     KC_PSCR,   KC_F7,   KC_F8,   KC_F9,  KC_F12, _______________DEAD_HALF_ROW_______________, \
     KC_SCRL,   KC_F4,   KC_F5,   KC_F6,  KC_F11, ______________HOME_ROW_GACS_R______________, \
     KC_PAUS,   KC_F1,   KC_F2,   KC_F3,  KC_F10, _______________DEAD_HALF_ROW_______________, \
-                      XXXXXXX, XXXXXXX,  KC_ESC, XXXXXXX, _______, XXXXXXX
+                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, XXXXXXX
 
 /** \brief Mouse emulation and pointer functions. */
 #define LAYOUT_LAYER_POINTER                                                                  \
@@ -188,6 +183,13 @@ tap_dance_action_t tap_dance_actions[] = {
     ______________HOME_ROW_GACS_L______________, ______________HOME_ROW_GACS_R______________, \
     _______, DRGSCRL, SNIPING, KC_BTN3, XXXXXXX, XXXXXXX, KC_BTN3, SNIPING, DRGSCRL, _______, \
                       KC_BTN3, KC_BTN2, KC_BTN1, KC_BTN1, KC_BTN2, KC_BTN3
+
+#define LAYOUT_LAYER_MACRO                                                                    \
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______________DEAD_HALF_ROW_______________, \
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, ______________HOME_ROW_GACS_R______________, \
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______________DEAD_HALF_ROW_______________, \
+                 XXXXXXX, XXXXXXX, SUDO_SYS_CTL, _______, XXXXXXX, XXXXXXX
+
 
 /**
  * \brief Add Home Row mod to a layout.
@@ -243,7 +245,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_HANDS_DOWN] = LAYOUT_wrapper(
     POINTER_MOD(HOME_ROW_MOD_GACS(LAYOUT_LAYER_HANDS_DOWN))
   ),
-  [LAYER_SYMBOLS] = LAYOUT_wrapper(LAYOUT_LAYER_SYMBOLS),
+  [LAYER_MACRO] = LAYOUT_wrapper(LAYOUT_LAYER_MACRO),
   [LAYER_NUMERAL] = LAYOUT_wrapper(LAYOUT_LAYER_NUMERAL),
   [LAYER_NAVIGATION] = LAYOUT_wrapper(LAYOUT_LAYER_NAVIGATION),
   [LAYER_FUNCTION] = LAYOUT_wrapper(LAYOUT_LAYER_FUNCTION),
@@ -265,11 +267,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [LAYER_BASE]       = {ENCODER_CCW_CW(KC_WH_D, KC_WH_U),  ENCODER_CCW_CW(KC_VOLD,  KC_VOLU)},
     [LAYER_HANDS_DOWN] = {ENCODER_CCW_CW(KC_WH_D, KC_WH_U),  ENCODER_CCW_CW(KC_VOLD,  KC_VOLU)},
-    [LAYER_SYMBOLS]    = {ENCODER_CCW_CW(XXXXXXX, XXXXXXX),  ENCODER_CCW_CW(KC_LEFT,  KC_RGHT)},
     [LAYER_NUMERAL]    = {ENCODER_CCW_CW(XXXXXXX, XXXXXXX),  ENCODER_CCW_CW(RGB_MOD, RGB_RMOD)},
     [LAYER_NAVIGATION] = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP),  ENCODER_CCW_CW(RGB_SPD,  RGB_SPI)},
     [LAYER_FUNCTION]   = {ENCODER_CCW_CW(KC_DOWN, KC_UP),    ENCODER_CCW_CW(RGB_VAD,  RGB_VAI)},
     [LAYER_POINTER]    = {ENCODER_CCW_CW(RGB_HUD, RGB_HUI),  ENCODER_CCW_CW(RGB_SAD,  RGB_SAI)},
+    [LAYER_MACRO]      = {ENCODER_CCW_CW(XXXXXXX, XXXXXXX),  ENCODER_CCW_CW(KC_LEFT,  KC_RGHT)},
 };
 // clang-format on
 #endif // ENCODER_MAP_ENABLE
@@ -288,6 +290,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         set_single_persistent_default_layer(LAYER_BASE);
       }
       return false;
+      break;
+    case SUDO_SYS_CTL:
+      if (record->event.pressed) {
+          // when keycode QMKBEST is pressed
+          SEND_STRING("QMK is the best thing ever!");
+      /* } else { */
+      /*     // when keycode QMKBEST is released */
+      }
       break;
   }
   return true;
