@@ -18,7 +18,7 @@
 
 #include QMK_KEYBOARD_H
 
-#include "achordion.h"
+/* #include "achordion.h" */
 
 typedef enum {
     TD_NONE,
@@ -277,7 +277,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 #endif // ENCODER_MAP_ENABLE
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (!process_achordion(keycode, record)) { return false; }
+  /* if (!process_achordion(keycode, record)) { return false; } */
   switch (keycode) {
     case HANDS_DOWN:
       if (record->event.pressed) {
@@ -303,6 +303,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-void matrix_scan_user(void) {
-  achordion_task();
-}
+/* void matrix_scan_user(void) { */
+/*   achordion_task(); */
+/* } */
