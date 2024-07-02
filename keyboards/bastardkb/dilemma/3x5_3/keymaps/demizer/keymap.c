@@ -59,7 +59,10 @@ enum dilemma_keymap_layers {
 enum custom_keycodes {
   DVORAK = SAFE_RANGE,
   HANDS_DOWN,
-  SUDO_SYS_CTL
+  SUDO_SYS_CTL,
+  KITTY_PREV_WIN,
+  KITTY_NEXT_WIN,
+  KITTY_LAST_CMD
 };
 
 // Automatically enable sniping-mode on the pointer layer.
@@ -71,6 +74,7 @@ enum custom_keycodes {
 #define BSP_FUN LT(LAYER_FUNCTION, KC_BSPC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 #define DF_HNDN DF(LAYER_HANDS_DOWN)
+#define DF_DVOK DF(LAYER_BASE)
 #define DF_DVOK DF(LAYER_BASE)
 
 #ifndef POINTING_DEVICE_ENABLE
@@ -185,10 +189,10 @@ tap_dance_action_t tap_dance_actions[] = {
                       KC_BTN3, KC_BTN2, KC_BTN1, KC_BTN1, KC_BTN2, KC_BTN3
 
 #define LAYOUT_LAYER_MACRO                                                                    \
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______________DEAD_HALF_ROW_______________, \
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, ______________HOME_ROW_GACS_R______________, \
-    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______________DEAD_HALF_ROW_______________, \
-                 XXXXXXX, XXXXXXX, SUDO_SYS_CTL, _______, XXXXXXX, XXXXXXX
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                _______________DEAD_HALF_ROW_______________, \
+    XXXXXXX, XXXXXXX, XXXXXXX, KITTY_LAST_CMD, XXXXXXX,         ______________HOME_ROW_GACS_R______________, \
+    XXXXXXX, XXXXXXX, XXXXXXX, KITTY_PREV_WIN, KITTY_NEXT_WIN,  _______________DEAD_HALF_ROW_______________, \
+                 XXXXXXX, XXXXXXX, SUDO_SYS_CTL,                _______, XXXXXXX, XXXXXXX
 
 
 /**
@@ -277,6 +281,9 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
 #endif // ENCODER_MAP_ENABLE
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+  // https://github.com/qmk/qmk_firmware/blob/master/docs/feature_macros.md
+
   /* if (!process_achordion(keycode, record)) { return false; } */
   switch (keycode) {
     case HANDS_DOWN:
@@ -293,10 +300,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case SUDO_SYS_CTL:
       if (record->event.pressed) {
-          // when keycode QMKBEST is pressed
-          SEND_STRING("QMK is the best thing ever!");
-      /* } else { */
-      /*     // when keycode QMKBEST is released */
+          SEND_STRING("sudo systemctl");
+      }
+      break;
+    case KITTY_PREV_WIN:
+      if (record->event.pressed) {
+        register_code(KC_LCTL);
+        register_code(KC_LSFT);
+        register_code(KC_LEFT);
+      } else {
+        unregister_code(KC_LEFT);
+        unregister_code(KC_LSFT);
+        unregister_code(KC_LCTL);
+      }
+      break;
+    case KITTY_NEXT_WIN:
+      if (record->event.pressed) {
+        register_code(KC_LCTL);
+        register_code(KC_LSFT);
+        register_code(KC_RGHT);
+      } else {
+        unregister_code(KC_RGHT);
+        unregister_code(KC_LSFT);
+        unregister_code(KC_LCTL);
+      }
+      break;
+    case KITTY_LAST_CMD:
+      if (record->event.pressed) {
+        register_code(KC_LCTL);
+        register_code(KC_LSFT);
+        register_code(KC_G);
+      } else {
+        unregister_code(KC_G);
+        unregister_code(KC_LSFT);
+        unregister_code(KC_LCTL);
       }
       break;
   }
